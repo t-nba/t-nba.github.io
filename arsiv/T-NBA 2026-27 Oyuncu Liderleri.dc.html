@@ -40,11 +40,17 @@
             <div style="margin-top:4px;font-size:14px;font-weight:700;letter-spacing:0.12em;color:rgba(32,30,29,0.5);white-space:nowrap">{{ c.teamUp }}</div>
           </div>
         </div>
-        <div style="text-align:right;font-size:50px;font-weight:900;font-variant-numeric:tabular-nums">{{ c.val }}</div>
+        <div style="text-align:right">
+          <div style="font-size:50px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1">{{ c.val }}</div>
+          <sc-if value="{{ c.altVar }}" hint-placeholder-val="{{ false }}"><div style="font-size:16px;font-weight:700;letter-spacing:0.06em;color:rgba(32,30,29,0.45);margin-top:4px;font-variant-numeric:tabular-nums">{{ c.alt }}</div></sc-if>
+        </div>
       </div>
     </sc-for>
   </div>
-  <div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:2px solid var(--color-text,#201e1d);font-size:15px;font-weight:700;letter-spacing:0.22em;color:rgba(32,30,29,0.55)">
+  <div style="margin-top:14px;font-size:12.5px;font-weight:600;letter-spacing:0.04em;line-height:1.6;color:rgba(32,30,29,0.45)">
+    Asgari şartlar — FG%: 25 şut denemesi &nbsp;·&nbsp; FT%: 10 serbest atış denemesi &nbsp;·&nbsp; A/T: 14 asist &nbsp;·&nbsp; TO (en az kayıp): 3+ maç, 25+ dk/maç
+  </div>
+  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:2px solid var(--color-text,#201e1d);font-size:15px;font-weight:700;letter-spacing:0.22em;color:rgba(32,30,29,0.55)">
     <div style="white-space:nowrap">T-NBA CHAMPIONSHIP</div><div style="white-space:nowrap">2026-27 SEZONU</div>
   </div>
 </div>
@@ -59,7 +65,8 @@ class Component extends DCLogic {
     const T = d.TEAMS;
     const cats = (d.PLAYER_LEADERS || []).map(c => ({
       code: c[0], desc: c[1], val: c[2], player: c[3],
-      teamUp: c[4].toUpperCase(), tm: T[c[4]][0], tc: T[c[4]][1], tlogo: T[c[4]][2]
+      teamUp: c[4].toUpperCase(), tm: T[c[4]][0], tc: T[c[4]][1], tlogo: T[c[4]][2],
+      alt: c[5] || "", altVar: !!c[5]
     }));
     return { hafta: d.WEEK.hafta, cats };
   }
