@@ -27,6 +27,7 @@ function Piece() {
   const D = useData();
   if (!D) return null;
   const M = D.WEEK.matchups, S = D.WEEK.standings, L = D.WEEK.leaders;
+  const P = D.PLAYER_LEADERS || [];
   const hafta = D.WEEK.hafta;
   const nextHafta = (D.FIXTURES && D.FIXTURES.hafta) || hafta + 1;
   const rootOp = animate({ from: 1, to: 0, start: authoredTotal - 0.5, end: authoredTotal - 0.05, ease: Easing.easeInQuad })(T);
@@ -102,10 +103,10 @@ function Piece() {
         })
       )
     ),
-    // En'ler
-    React.createElement(Shot, { from: CUES.Enler - 0.2, to: CUES.Kapanis + 0.3 },
+    // En'ler (takım)
+    React.createElement(Shot, { from: CUES.Enler - 0.2, to: CUES.OyuncuEnleri + 0.4 },
       kicker("HAFTANIN EN'LERİ", CUES.Enler + 0.1),
-      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 236, opacity: MO.fade(CUES.Kapanis - 0.45)(T) } },
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 236, opacity: MO.fade(CUES.OyuncuEnleri - 0.5)(T) } },
         L.map((c, i) => {
           const at = CUES.Enler + 0.25 + i * 0.28;
           const e = MO.enter(at, 0.5)(T);
@@ -116,6 +117,27 @@ function Piece() {
             React.createElement('div', { style: { fontSize: 30, fontWeight: 900, letterSpacing: '0.06em', color: RED } }, c[0]),
             React.createElement('div', { style: { fontSize: 66, fontWeight: 900, fontVariantNumeric: 'tabular-nums' } }, shown),
             React.createElement('div', { style: { fontSize: 26, fontWeight: 700, color: DIM, whiteSpace: 'nowrap', textAlign: 'right' } }, c[3])
+          );
+        })
+      )
+    ),
+    // Oyuncu liderleri
+    React.createElement(Shot, { from: CUES.OyuncuEnleri - 0.2, to: CUES.Kapanis + 0.3 },
+      kicker('OYUNCU LİDERLERİ', CUES.OyuncuEnleri + 0.1),
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 236, opacity: MO.fade(CUES.Kapanis - 0.45)(T) } },
+        P.map((c, i) => {
+          const at = CUES.OyuncuEnleri + 0.25 + i * 0.28;
+          const e = MO.enter(at, 0.5)(T);
+          const num = parseFloat(c[2]);
+          const isInt = /^\d+$/.test(c[2]);
+          const shown = isInt ? Math.round(num * clamp(animate({ from: 0, to: 1, start: at, end: at + 0.7, ease: Easing.easeOutCubic })(T), 0, 1)) : c[2];
+          return React.createElement('div', { key: i, style: { display: 'grid', gridTemplateColumns: '130px 1fr auto', alignItems: 'center', columnGap: 24, height: 132, borderBottom: '1px solid rgba(32,30,29,0.14)', opacity: e.opacity, transform: `translateY(${e.y}px)` } },
+            React.createElement('div', { style: { fontSize: 30, fontWeight: 900, letterSpacing: '0.06em', color: RED } }, c[0]),
+            React.createElement('div', { style: { minWidth: 0 } },
+              React.createElement('div', { style: { fontSize: 38, fontWeight: 900, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, c[3]),
+              React.createElement('div', { style: { fontSize: 19, fontWeight: 700, color: DIM, letterSpacing: '0.08em', textTransform: 'uppercase' } }, c[4] || '')
+            ),
+            React.createElement('div', { style: { fontSize: 54, fontWeight: 900, fontVariantNumeric: 'tabular-nums', textAlign: 'right' } }, shown)
           );
         })
       )

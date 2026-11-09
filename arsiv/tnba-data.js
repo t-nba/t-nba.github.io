@@ -21,85 +21,85 @@ export const TEAMS = {
   "Wildcats": ["WC", "#3B62C4", "assets/teams/WC.jpg"]
 };
 export const WEEK = {
-  hafta: 1,
+  hafta: 2,
   standings: [
-    { r: 1, n: "Dağsu Bears", rec: "9-2-0", form: "W", prev: null },
-    { r: 2, n: "San Andon Spurs", rec: "9-2-0", form: "W", prev: null },
-    { r: 3, n: "Ottoman", rec: "8-3-0", form: "W", prev: null },
-    { r: 4, n: "Sin City Wolves", rec: "7-4-0", form: "W", prev: null },
-    { r: 5, n: "Dosma's Crazy Horses", rec: "7-4-0", form: "W", prev: null },
-    { r: 6, n: "Rhizus Hawks", rec: "6-4-1", form: "W", prev: null },
-    { r: 7, n: "Borçka Bulls", rec: "6-5-0", form: "W", prev: null },
-    { r: 8, n: "Wild Butterfli's", rec: "6-5-0", form: "W", prev: null },
-    { r: 9, n: "Giresun Hazelnuts", rec: "6-5-0", form: "W", prev: null },
-    { r: 10, n: "God's Wrath", rec: "5-6-0", form: "L", prev: null },
-    { r: 11, n: "Eagles", rec: "5-6-0", form: "L", prev: null },
-    { r: 12, n: "Phoenix Ashes", rec: "5-6-0", form: "L", prev: null },
-    { r: 13, n: "Peripol Hornets", rec: "4-6-1", form: "L", prev: null },
-    { r: 14, n: "Cardinals", rec: "4-7-0", form: "L", prev: null },
-    { r: 15, n: "Wildcats", rec: "4-7-0", form: "L", prev: null },
-    { r: 16, n: "Sultan Selim Suns", rec: "3-8-0", form: "L", prev: null },
-    { r: 17, n: "Ventolins", rec: "2-9-0", form: "L", prev: null },
-    { r: 18, n: "Kaplıca Gunslingers", rec: "2-9-0", form: "L", prev: null }
+    { r: 1, n: "Rhizus Hawks", rec: "16-5-1", form: "WW", prev: 6 },
+    { r: 2, n: "Dağsu Bears", rec: "16-6-0", form: "WW", prev: 1 },
+    { r: 3, n: "San Andon Spurs", rec: "15-6-1", form: "WW", prev: 2 },
+    { r: 4, n: "Sin City Wolves", rec: "14-7-1", form: "WW", prev: 4 },
+    { r: 5, n: "Ottoman", rec: "14-8-0", form: "WW", prev: 3 },
+    { r: 6, n: "Ventolins", rec: "12-10-0", form: "LW", prev: 17 },
+    { r: 7, n: "Phoenix Ashes", rec: "12-10-0", form: "LW", prev: 12 },
+    { r: 8, n: "Eagles", rec: "11-10-1", form: "LW", prev: 11 },
+    { r: 9, n: "Dosma's Crazy Horses", rec: "11-10-1", form: "WL", prev: 5 },
+    { r: 10, n: "Wild Butterfli's", rec: "11-11-0", form: "WL", prev: 8 },
+    { r: 11, n: "Giresun Hazelnuts", rec: "11-11-0", form: "WL", prev: 9 },
+    { r: 12, n: "Cardinals", rec: "10-12-0", form: "LW", prev: 14 },
+    { r: 13, n: "God's Wrath", rec: "9-13-0", form: "LL", prev: 10 },
+    { r: 14, n: "Wildcats", rec: "8-13-1", form: "LL", prev: 15 },
+    { r: 15, n: "Peripol Hornets", rec: "7-13-2", form: "LL", prev: 13 },
+    { r: 16, n: "Borçka Bulls", rec: "7-15-0", form: "WL", prev: 7 },
+    { r: 17, n: "Kaplıca Gunslingers", rec: "6-16-0", form: "LL", prev: 18 },
+    { r: 18, n: "Sultan Selim Suns", rec: "4-18-0", form: "LL", prev: 16 }
   ],
   matchups: [
-    ["Cardinals", 4, "Sin City Wolves", 7],
-    ["Ventolins", 2, "Dağsu Bears", 9],
-    ["God's Wrath", 5, "Giresun Hazelnuts", 6],
-    ["Eagles", 5, "Wild Butterfli's", 6],
-    ["Peripol Hornets", 4, "Rhizus Hawks", 6],
-    ["Wildcats", 4, "Dosma's Crazy Horses", 7],
-    ["Borçka Bulls", 6, "Phoenix Ashes", 5],
-    ["Kaplıca Gunslingers", 2, "San Andon Spurs", 9],
-    ["Sultan Selim Suns", 3, "Ottoman", 8]
+    ["Cardinals", 6, "Wild Butterfli's", 5],
+    ["Ventolins", 10, "Sultan Selim Suns", 1],
+    ["God's Wrath", 4, "Phoenix Ashes", 7],
+    ["Eagles", 6, "Wildcats", 4],
+    ["Peripol Hornets", 3, "Sin City Wolves", 7],
+    ["Borçka Bulls", 1, "Rhizus Hawks", 10],
+    ["Dağsu Bears", 7, "Kaplıca Gunslingers", 4],
+    ["San Andon Spurs", 6, "Dosma's Crazy Horses", 4],
+    ["Ottoman", 6, "Giresun Hazelnuts", 5]
   ],
   leaders: [
-    ["FG%", "FIELD GOAL %", ".516", "Giresun Hazelnuts"],
-    ["FT%", "FREE THROW %", ".887", "Borçka Bulls"],
-    ["3PTM", "THREE POINTERS MADE", "69", "Rhizus Hawks"],
-    ["PTS", "POINTS", "613", "San Andon Spurs"],
-    ["OREB", "OFFENSIVE REBOUNDS", "70", "Dosma's Crazy Horses"],
-    ["DREB", "DEFENSIVE REBOUNDS", "176", "Peripol Hornets"],
-    ["AST", "ASSISTS", "166", "Dağsu Bears"],
-    ["ST", "STEALS", "41", "Ottoman"],
-    ["BLK", "BLOCKS", "34", "Peripol Hornets"],
-    ["TO", "TURNOVERS", "46", "Giresun Hazelnuts"],
-    ["A/T", "ASSIST / TURNOVER", "2.24", "Dağsu Bears"]
+    ["FG%", "FIELD GOAL %", ".500", "God's Wrath"],
+    ["FT%", "FREE THROW %", ".866", "Dağsu Bears"],
+    ["3PTM", "THREE POINTERS MADE", "81", "Sin City Wolves"],
+    ["PTS", "POINTS", "630", "Eagles"],
+    ["OREB", "OFFENSIVE REBOUNDS", "65", "Peripol Hornets"],
+    ["DREB", "DEFENSIVE REBOUNDS", "202", "Dosma's Crazy Horses"],
+    ["AST", "ASSISTS", "172", "Phoenix Ashes"],
+    ["ST", "STEALS", "47", "Ventolins"],
+    ["BLK", "BLOCKS", "35", "Rhizus Hawks"],
+    ["TO", "TURNOVERS", "48", "Borçka Bulls"],
+    ["A/T", "ASSIST / TURNOVER", "2.29", "Phoenix Ashes"]
   ]
 };
 
 // Hafta öncesi fikstür — teaser kartı bunu okur.
 export const FIXTURES = {
-  hafta: 2,
+  hafta: 3,
   pairs: [
-    ["Cardinals", "Wild Butterfli's"],
-    ["Ventolins", "Sultan Selim Suns"],
-    ["God's Wrath", "Phoenix Ashes"],
-    ["Eagles", "Wildcats"],
-    ["Peripol Hornets", "Sin City Wolves"],
-    ["Borçka Bulls", "Rhizus Hawks"],
-    ["Dağsu Bears", "Kaplıca Gunslingers"],
-    ["San Andon Spurs", "Dosma's Crazy Horses"],
-    ["Ottoman", "Giresun Hazelnuts"]
+    ["Cardinals", "Wildcats"],
+    ["Ventolins", "Kaplıca Gunslingers"],
+    ["God's Wrath", "Rhizus Hawks"],
+    ["Eagles", "San Andon Spurs"],
+    ["Peripol Hornets", "Wild Butterfli's"],
+    ["Borçka Bulls", "Sin City Wolves"],
+    ["Dağsu Bears", "Dosma's Crazy Horses"],
+    ["Sultan Selim Suns", "Giresun Hazelnuts"],
+    ["Ottoman", "Phoenix Ashes"]
   ]
 };
 // Kategori lideri OYUNCULAR.
 export const PLAYER_LEADERS = [
-  ["FG%", "FIELD GOAL %", ".735", "Zion Williamson", "San Andon Spurs", "25/34"],
-  ["FT%", "FREE THROW %", "1.000", "Stephen Curry", "Giresun Hazelnuts", "22/22"],
-  ["3PTM", "THREE POINTERS MADE", "20", "Luka Dončić", "Eagles"],
-  ["PTS", "POINTS", "123", "Luka Dončić", "Eagles"],
-  ["OREB", "OFFENSIVE REBOUNDS", "26", "Moussa Diabaté", "Eagles"],
-  ["DREB", "DEFENSIVE REBOUNDS", "35", "Giannis Antetokounmpo", "Ottoman"],
-  ["AST", "ASSISTS", "31", "Nikola Jokić", "Wildcats"],
-  ["ST", "STEALS", "11", "Zion Williamson", "San Andon Spurs"],
-  ["BLK", "BLOCKS", "13", "Victor Wembanyama", "Rhizus Hawks"],
-  ["TO", "TURNOVERS", "1", "Anthony Davis", "Giresun Hazelnuts"],
-  ["A/T", "ASSIST / TURNOVER", "26.000", "Cam Spencer", "Cardinals", "26/1"]
+  ["FG%", "FIELD GOAL %", ".731", "Daniel Gafford", "Giresun Hazelnuts", "19/26"],
+  ["FT%", "FREE THROW %", "1.000", "Devin Booker", "God's Wrath", "27/27"],
+  ["3PTM", "THREE POINTERS MADE", "21", "N. Alexander-Walker", "Phoenix Ashes"],
+  ["PTS", "POINTS", "143", "Shai Gilgeous-Alexander", "Giresun Hazelnuts"],
+  ["OREB", "OFFENSIVE REBOUNDS", "22", "Dyson Daniels", "Ventolins"],
+  ["DREB", "DEFENSIVE REBOUNDS", "43", "Giannis Antetokounmpo", "Ottoman"],
+  ["AST", "ASSISTS", "36", "Darius Acuff Jr.", "San Andon Spurs"],
+  ["ST", "STEALS", "11", "Dyson Daniels", "Ventolins"],
+  ["BLK", "BLOCKS", "14", "Victor Wembanyama", "Rhizus Hawks"],
+  ["TO", "TURNOVERS", "0", "Leaky Black", ""],
+  ["A/T", "ASSIST / TURNOVER", "10.000", "Miles Bridges", "Ventolins", "20/2"]
 ];
 
 // Haftanın Maçı — en çekişmeli maç otomatik seçilir.
-export const SPOTLIGHT = { index: 2, etiket: "HAFTANIN MAÇI" };
+export const SPOTLIGHT = { index: 0, etiket: "HAFTANIN MAÇI" };
 
 // Şampiyonluk onur listesi — her sezon sonunda elle bir satır eklenir.
 export const CHAMPIONS = [
