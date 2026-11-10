@@ -80,19 +80,13 @@
           </sc-for>
         </div>
       </sc-if>
-      <sc-if value="{{ isGraf }}" hint-placeholder-val="{{ false }}">
-        <div style="border-top:2px solid var(--color-text,#201e1d);padding-top:18px">
-          <div style="font-size:13px;font-weight:700;color:rgba(32,30,29,0.5);margin-bottom:10px">Takımın çizgisine ya da adına dokun: yalnız o vurgulanır. Boş alana dokununca sıfırlanır.</div>
-          <div id="grafik-kutu" style="width:100%"></div>
-        </div>
-      </sc-if>
     </div>
   </div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { list: null, mod: null, sel: 0, tab: 0, seyir: null, vurgu: null };
+  state = { list: null, mod: null, sel: 0, tab: 0 };
   componentDidMount() {
     import('./arsiv/haftalar.js?v=' + Date.now()).then(m => { // her açılışta taze liste (önbellek aşımı)
       this.setState({ list: m.HAFTALAR });
@@ -111,8 +105,8 @@ class Component extends DCLogic {
       pick: () => this.loadWeek(list, i),
       bg: i === sel ? bgOn : 'transparent', fg: i === sel ? fgOn : ink
     }));
-    const tabs = ['PUAN DURUMU', 'SONUÇLAR', "EN'LER", 'SIRALAMA SEYRİ'].map((t, i) => ({
-      label: t, pick: () => { this.setState({ tab: i }); if (i === 3) this.yukleSeyir(); },
+    const tabs = ['PUAN DURUMU', 'SONUÇLAR', "EN'LER", 'SIRALAMA SEYRİ ↗'].map((t, i) => ({
+      label: t, pick: () => { if (i === 3) { window.location.href = 'T-NBA%20Siralama%20Seyri.dc.html'; return; } this.setState({ tab: i }); },
       bg: i === tab ? bgOn : 'transparent', fg: i === tab ? fgOn : ink
     }));
     let rows = [], games = [], cats = [];
@@ -125,67 +119,7 @@ class Component extends DCLogic {
       games = mod.WEEK.matchups.map(g => ({ ln: g[0], ls: g[1], rn: g[2], rs: g[3], lw: g[1] > g[3], rw: g[3] > g[1] }));
       cats = mod.WEEK.leaders.map(c => ({ code: c[0], val: c[2], team: c[3] }));
     }
-    if (tab === 3) requestAnimationFrame(() => this.cizGrafik());
-    return { weeks, tabs, rows, games, cats, isStand: tab === 0, isRes: tab === 1, isLead: tab === 2, isGraf: tab === 3 };
-  }
-  // Tüm haftaların sıralamalarını yükle (bir kez)
-  yukleSeyir() {
-    if (this.state.seyir) return;
-    const list = this.state.list || [];
-    Promise.all(list.map(w => import('./arsiv/' + w.dosya.replace('./', '') + '?v=' + Date.now())))
-      .then(mods => {
-        const haftalar = mods.map((m, i) => ({ hafta: list[i].hafta, ranks: Object.fromEntries(m.WEEK.standings.map(s => [s.n, s.r])) }))
-          .sort((a, b) => a.hafta - b.hafta);
-        this.setState({ seyir: haftalar });
-      });
-  }
-  // Sıralama seyri (bump chart) — tema dili: takım renkli 2.5px çizgiler, uçta
-  // monogram rozeti + takım adı, 8-9 arasında kırmızı kesikli playoff sınırı.
-  cizGrafik() {
-    const k = document.getElementById('grafik-kutu');
-    if (!k) return;
-    const { seyir, mod, vurgu } = this.state;
-    if (!seyir || !mod) { k.innerHTML = '<div style="padding:30px 0;color:rgba(32,30,29,0.5);font-weight:700">Yükleniyor…</div>'; return; }
-    const T = mod.TEAMS, takimlar = Object.keys(T);
-    const W = 960, laneH = 32, ust = 44, sol = 44, sag = 252, N = seyir.length;
-    const H = ust + 18 * laneH + 16;
-    const x = i => N === 1 ? sol + (W - sol - sag) / 2 : sol + i * (W - sol - sag) / (N - 1);
-    const y = r => ust + (r - 0.5) * laneH;
-    const dim = t => vurgu && vurgu !== t;
-    let s = '';
-    // hafta dikey kılavuzları + başlıkları (silik)
-    for (let i = 0; i < N; i++) {
-      s += `<line x1="${x(i)}" y1="${ust - 8}" x2="${x(i)}" y2="${H - 16}" stroke="rgba(32,30,29,0.08)" stroke-width="1"/>`;
-      s += `<text x="${x(i)}" y="${ust - 20}" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="2" fill="rgba(32,30,29,0.5)">${seyir[i].hafta}. HAFTA</text>`;
-    }
-    // sıra numaraları (silik) + playoff sınırı
-    for (let r = 1; r <= 18; r++) s += `<text x="${sol - 14}" y="${y(r) + 5}" text-anchor="end" font-size="14" font-weight="800" fill="rgba(32,30,29,${r <= 8 ? 0.55 : 0.3})">${r}</text>`;
-    const py = ust + 8 * laneH;
-    s += `<line x1="${sol - 6}" y1="${py}" x2="${W - sag + 10}" y2="${py}" stroke="#ec3013" stroke-width="2" stroke-dasharray="7 5"/>`;
-    s += `<text x="${sol - 6}" y="${py - 7}" font-size="11" font-weight="800" letter-spacing="2.5" fill="#ec3013">PLAYOFF SINIRI</text>`;
-    // çizgiler + noktalar + uç rozetleri (vurgulu takım en üstte çizilsin)
-    const sirali = takimlar.slice().sort((a, b) => (a === vurgu) - (b === vurgu));
-    for (const t of sirali) {
-      const renk = T[t][1], mono = T[t][0];
-      const pts = seyir.map((h, i) => h.ranks[t] ? [x(i), y(h.ranks[t])] : null).filter(Boolean);
-      if (!pts.length) continue;
-      const op = dim(t) ? 0.1 : 1;
-      s += `<g data-takim="${t.replace(/"/g, '&quot;')}" style="cursor:pointer" opacity="${op}">`;
-      if (pts.length > 1) s += `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="${renk}" stroke-width="2.5" stroke-linejoin="round"/>`;
-      for (const p of pts) s += `<circle cx="${p[0]}" cy="${p[1]}" r="5.5" fill="${renk}" stroke="#f3f2f2" stroke-width="2"/>`;
-      const son = pts[pts.length - 1];
-      s += `<rect x="${W - sag + 22}" y="${son[1] - 13}" width="26" height="26" fill="#fbfaf9" stroke="${renk}" stroke-width="2"/>`;
-      s += `<text x="${W - sag + 35}" y="${son[1] + 4.5}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#201e1d">${mono}</text>`;
-      s += `<text x="${W - sag + 56}" y="${son[1] + 5}" font-size="13.5" font-weight="${dim(t) ? 600 : 800}" fill="#201e1d">${t.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</text>`;
-      s += `<line x1="${son[0] + 8}" y1="${son[1]}" x2="${W - sag + 20}" y2="${son[1]}" stroke="rgba(32,30,29,0.18)" stroke-width="1"/>`;
-      s += `</g>`;
-    }
-    k.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block;font-family:inherit">${s}</svg>`;
-    k.onclick = e => {
-      const g = e.target.closest('[data-takim]');
-      const t = g ? g.getAttribute('data-takim') : null;
-      this.setState({ vurgu: t === this.state.vurgu ? null : t });
-    };
+    return { weeks, tabs, rows, games, cats, isStand: tab === 0, isRes: tab === 1, isLead: tab === 2 };
   }
 }
 </script>

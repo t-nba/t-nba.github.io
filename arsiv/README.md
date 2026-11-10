@@ -18,6 +18,34 @@ Tüm ekranlar SADECE bu dosyadan beslenir. Haftalık iş akışı: Yahoo veriler
 - `CHAMPIONS`: sezon → şampiyon listesi (şampiyonlar sayfası + ★ sayaçları otomatik).
 Türetilenler (elle girilmez): sıra okları, 3+ galibiyet/mağlubiyet seri rozetleri, "EN ÇEKİŞMELİ / EN FARKLI" etiketi, "HAFTANIN HÂKİMİ" bandı, şampiyonluk ★'ları.
 
+
+## Web Bölümleri (arşiv sitesi — PNG değil)
+`T-NBA Siralama Seyri.dc.html`, `T-NBA Kategori DNA.dc.html`, `T-NBA Guc ve Kategori.dc.html` ve `T-NBA Arsiv.dc.html` paylaşım görseli değildir; arşiv sitesinde akışkan genişlikte (max ~1140px) yaşar, telefonda da çalışır. Hepsi açıldığında arşivde kaç hafta varsa onu okur; kodlarında hafta/sıra/istatistik yoktur. `?arsiv=KLASOR` URL parametresi test klasörü seçer (`test-arsiv-2`, `test-arsiv-17`, `test-arsiv-dna`); varsayılan `arsiv`.
+**Haftalık veri sözleşmesi** (`arsiv/hafta-N.js`): `WEEK.standings` [{r, n, rec, form, prev}], `WEEK.matchups`, `WEEK.leaders` [kod, açıklama, değer, takım], `WEEK.teamStats` { takım: { "FG%": ".441", … 11 kategori } }. `arsiv/haftalar.js`: `HAFTALAR` [{hafta, dosya}] — sıra önemli değil, ekranlar haftaya göre sıralar.
+
+## Takım Renkleri (logodan türetildi — otomasyon bu değerleri kullanmalı)
+`TEAMS[takım][1]` aşağıdaki değerlerle yazılmalı; aksi halde tüm ekranlar eski renklere döner. Benzer tonlar çakışmasın diye Borçka (yeşil), Rhizus (altın), Peripol (gök mavisi), Eagles (pembe) logonun ikinci rengini kullanır. Referans sayfa: `T-NBA Takim Renkleri.dc.html`.
+| Takım | Renk |
+|---|---|
+| Dosma's Crazy Horses | #13708F |
+| Sin City Wolves | #4A5A70 |
+| Ventolins | #3E7FB0 |
+| Cardinals | #C8102E |
+| San Andon Spurs | #9A9B9D |
+| Kaplıca Gunslingers | #B08850 |
+| Phoenix Ashes | #A3311A |
+| Borçka Bulls | #6DB33F |
+| Peripol Hornets | #1FA7E0 |
+| Wild Butterfli's | #6B3F1D |
+| Sultan Selim Suns | #1F2326 |
+| Dağsu Bears | #0B2A5B |
+| Ottoman | #6E1B2E |
+| God's Wrath | #F1800F |
+| Giresun Hazelnuts | #B8621B |
+| Eagles | #E08BAE |
+| Rhizus Hawks | #D9B01F |
+| Wildcats | #E8505B |
+
 ## Screens
 Hepsi 1080×1920, kök eleman `[data-screen-label]` attribute'u taşır — PNG yakalama hedefi budur.
 
@@ -38,6 +66,30 @@ Tek sayfa 1080×1920: ince başlık "Draft Sırası" (96px/700), 16 Ekim · 22.0
 
 ### T-NBA 101 — Lig Rehberi (`T-NBA 101 Kartlar.dc.html`)
 6 adet 1080×1920 kart (labels: `101 Kapak`, `101 01` … `101 05`): Kapak, Draft, Takım Kadrosu, Kategoriler ve Lig Tablosu, Takas, Free Agent. WhatsApp'ta albüm olarak paylaşılır.
+
+### Sıralama Seyri (`T-NBA Siralama Seyri.dc.html`, label `Siralama Seyri`)
+Arşiv sitesinde yaşayan web bölümü (paylaşım görseli değil; max ~1140px içerik, akışkan). 18 takımın hafta hafta sıralama yolculuğu — bump chart.
+- **Veri:** yalnız `arsiv/haftalar.js` (HAFTALAR, haftaya göre sıralanır) → her `arsiv/hafta-N.js` `WEEK.standings` (r, n) + `tnba-data.js` `TEAMS` (renk, monogram, logo → `tnba-logo-fx` ile işlenir). Kodda hafta/sıra yok; kaç hafta varsa o çizilir.
+- **Test klasörleri:** `test-arsiv-2/`, `test-arsiv-17/` (TEST verisi). `?arsiv=test-arsiv-17` URL parametresi ya da `veriKlasoru` prop'u ile seçilir; varsayılan `arsiv`.
+- **Yoğunluk stratejisi:** sütun aralığı = alan/(hafta−1), min 48px (mobil 46). Masaüstü tam genişlikte 17 hafta kaydırmasız sığar; dar ekranda grafik yatay kaydırılır, açılışta en son haftaya kayar, kenar soluklaşmaları kaydırılabilirliği gösterir. Sıra ekseni (sol) ve son hafta etiketleri (sağ) sabit kalır. 86px altı aralıkta hafta başlıkları "N. HAFTA" → "N" olur.
+- **Görünüm anahtarı:** SON 5 (≥6 hafta) / SON 10 (≥11 hafta) / TÜM SEZON. Mobilde (<640px) varsayılan SON 5; masaüstünde TÜM SEZON.
+- **Sağ etiketler:** son haftanın sırasına göre dizilir (sıra benzersiz olduğundan çakışma yok; eşitlikte sıralı yuvaya yerleşir): sıra, işlenmiş logo, ad, geçen haftaya göre ▲/▼. Mobilde ad gizlenir (logo + değişim).
+- **Etkileşim:** çizgi/logo/isim/kart tıkla → yalnız o takım; çizgi kalınlaşır, her haftaki sırası numaralı rozetle yazılır, üstte takım özeti (şu an, en iyi, en kötü, playoff alanında geçen hafta). Boşluğa tıkla → sıfırla. Masaüstünde hover ön izleme.
+- **Hikâye kartları (otomatik):** son hafta lideri (+ zirve serisi), haftanın en büyük yükselişi ve düşüşü.
+
+### Kategori DNA'sı (`T-NBA Kategori DNA.dc.html`, label `Kategori DNA`)
+Arşiv sitesinde web bölümü. Her takımın 11 kategorideki gücü 11 yapraklı radyal "parmak izi" olarak: yaprak uzunluğu = 18 takım içindeki sıra (1 en uzun). TO'da düşük değer iyi sayılır (ters sıralama).
+- **Veri:** `arsiv/haftalar.js` → her `hafta-N.js` içinde `WEEK.teamStats` (veya üst düzey `export const TEAM_STATS`): `{ "Takım": { "FG%": ".441", "FT%": ".794", "3PTM": "42", "PTS": "508", "OREB": "38", "DREB": "160", "AST": "166", "ST": "30", "BLK": "17", "TO": "89", "A/T": "1.87" } }`. Metin ya da sayı olabilir. Sıralamalar ekranda hesaplanır; `teamStats` olmayan haftalar atlanır.
+- **Dönem:** SEZON ORTALAMASI (teamStats olan haftaların değer ortalaması) / HAFTALIK (‹ › ile hafta seçimi).
+- **Ana görünüm:** seçili takımın büyük DNA'sı + otomatik cümle ("X ile yaşıyor, Y ile zorlanıyor"), en güçlü/zayıf kategoriler, profil etiketi (Pota altı / Şutör / Oyun kurucu / Savunmacı — kategori gruplarının ortalama sırasına göre), kategori sıralama tablosu.
+- **Karşılaştırma:** ikinci takım seçilince şekli çizgi olarak üstüne biner; tabloda rakibin sırası ve kategori üstünlüğü sayısı, iki takım karşılaşmışsa maç skorları.
+- **Alt ızgara:** 18 takımın mini DNA'sı, lig sırasına göre; tıklanınca ana görünüme gelir.
+- **Test:** `test-arsiv-dna/` (uydurma istatistik) — `?arsiv=test-arsiv-dna`.
+
+### Tablonun Arkası — Güç Sıralaması + Kategori Krallığı (`T-NBA Guc ve Kategori.dc.html`, label `Guc ve Kategori`)
+Arşiv sitesinde web bölümü. Veri: `arsiv/haftalar.js` → her `hafta-N.js` (`WEEK.standings`, `WEEK.leaders`, `WEEK.teamStats`) + `tnba-data.js` `TEAMS`. Kategoriler sabit lig sırasında: FG% → FT% → 3PTM → PTS → OREB → DREB → AST → ST → BLK → TO → A/T.
+- **Güç Sıralaması:** her hafta 11 kategoride 18 takım arasındaki sıranın ortalaması (TO'da az olan iyi), `teamStats` olan haftalar boyunca ortalanır. Tablo: güç sırası, ortalama sıra, lig tablosu sırası (son hafta), fark çubuğu (fark = tablo − güç; + "tablo küçümsüyor", − "tablo şişiriyor"). Üstte 3 otomatik kart: güçte 1 numara, en çok küçümsenen, en çok şişirilen.
+- **Kategori Krallığı:** 18 takım (lig sırasına göre) × 11 kategori ızgarası. "Haftalık liderlik" görünümünde hücre = o kategoride kaç hafta lider (kaynak `WEEK.leaders`; yoksa `teamStats`'tan hesaplanır, beraberlikte ikisi de sayılır). "Ortalama sıra" görünümünde hücre = kategorideki ortalama sıra. Alt satır: her kategorinin "kralı".
 
 ### Animasyonlu Story (`T-NBA Story Animasyon.dc.html` + `tnba-story-scene.jsx` + `animations-v3.jsx`)
 23sn, 5 sahne (Açılış → Skorlar → İlk 3 → En'ler → Kapanış), sahne listesi `window.OM_SCENES`'te; aynı `tnba-data.js`'ten beslenir. PNG değil video/canlı kullanım içindir; MP4 export tarayıcıdan yapılır.

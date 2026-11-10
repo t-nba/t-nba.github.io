@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-785da292-216d-47a9-800f-8e6c4680f25f/styles.css">
+<script src="_ds/modernist-785da292-216d-47a9-800f-8e6c4680f25f/_ds_bundle.js"></script>
+<style>body{margin:0;background:#f3f2f2} a{color:#ec3013;text-decoration:none} a:hover{color:#a02613}</style>
+</helmet>
+<div data-screen-label="Siralama Seyri" onClick="{{ reset }}" style="box-sizing:border-box;max-width:1188px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(14px,3vw,24px) clamp(28px,5vw,56px);background:var(--color-bg,#f3f2f2);color:var(--color-text,#201e1d);font-family:var(--font-body,'Archivo',sans-serif)">
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 32px;padding-bottom:20px;border-bottom:2px solid #201e1d">
+    <div style="min-width:0">
+      <div style="font-size:12px;font-weight:800;letter-spacing:0.28em;color:#ec3013">T-NBA CHAMPIONSHIP · 2026-27 NORMAL SEZON</div>
+      <div style="margin-top:12px;font-size:clamp(38px,6.4vw,68px);font-weight:900;line-height:0.94;letter-spacing:-0.025em">Sıralama Seyri</div>
+      <div style="margin-top:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;gap:3px">
+          <sc-for list="{{ prog }}" as="pg" hint-placeholder-count="17">
+            <div style="width:14px;height:6px;background:{{ pg.bg }}"></div>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:0.18em;color:rgba(32,30,29,0.6);white-space:nowrap">{{ progTxt }}</div>
+      </div>
+    </div>
+    <sc-if value="{{ hasViews }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;border:2px solid #201e1d">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="2">
+          <div onClick="{{ v.pick }}" style="cursor:pointer;padding:11px 16px;font-size:12px;font-weight:800;letter-spacing:0.14em;white-space:nowrap;background:{{ v.bg }};color:{{ v.fg }}" style-hover="background:#e4e1dc">{{ v.l }}</div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+  <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px">
+    <sc-for list="{{ cards }}" as="k" hint-placeholder-count="3">
+      <div onClick="{{ k.pick }}" style="cursor:pointer;background:#fbfaf9;border:1px solid {{ k.bd }};padding:16px 18px;display:flex;flex-direction:column;gap:10px" style-hover="border-color:#201e1d">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div style="min-width:0;padding-top:6px;font-size:11px;font-weight:800;letter-spacing:0.18em;line-height:1.4;color:#ec3013">{{ k.kicker }}</div>
+          <div style="flex-shrink:0;font-size:40px;font-weight:900;line-height:0.9;letter-spacing:-0.03em;color:{{ k.bc }};font-variant-numeric:tabular-nums;white-space:nowrap">{{ k.big }}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;min-width:0">
+          <sc-if value="{{ k.hasLogo }}" hint-placeholder-val="{{ false }}"><div style="width:32px;height:32px;flex-shrink:0;background-image:{{ k.logoCss }};background-size:contain;background-position:center;background-repeat:no-repeat"></div></sc-if>
+          <div style="flex:1;min-width:0;font-size:19px;font-weight:800;line-height:1.2;letter-spacing:-0.015em;white-space:nowrap">{{ k.team }}</div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:rgba(32,30,29,0.6)">{{ k.sub }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ hasDetail }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ stop }}" style="margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 30px;background:#201e1d;color:#f3f2f2;padding:14px 18px">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0">
+        <sc-if value="{{ det.hasLogo }}" hint-placeholder-val="{{ false }}"><div style="width:40px;height:40px;background:#f3f2f2;display:grid;place-items:center;flex-shrink:0"><div style="width:36px;height:36px;background-image:{{ det.logoCss }};background-size:contain;background-position:center;background-repeat:no-repeat"></div></div></sc-if>
+        <div style="min-width:0">
+          <div style="font-size:10px;font-weight:800;letter-spacing:0.24em;color:#ec3013;white-space:nowrap">VURGULANAN TAKIM</div>
+          <div style="margin-top:4px;font-size:22px;font-weight:900;letter-spacing:-0.01em;white-space:nowrap">{{ det.name }}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px 28px">
+        <sc-for list="{{ det.stats }}" as="s" hint-placeholder-count="4">
+          <div>
+            <div style="font-size:10px;font-weight:800;letter-spacing:0.2em;color:rgba(243,242,242,0.55);white-space:nowrap">{{ s.l }}</div>
+            <div style="margin-top:4px;font-size:19px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums">{{ s.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div onClick="{{ reset }}" style="margin-left:auto;cursor:pointer;border:2px solid #f3f2f2;padding:9px 14px;font-size:11px;font-weight:800;letter-spacing:0.16em;white-space:nowrap" style-hover="background:#ec3013;border-color:#ec3013">TÜMÜNÜ GÖSTER</div>
+    </div>
+  </sc-if>
+  <div style="margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px;font-size:12px;font-weight:700;letter-spacing:0.06em;color:rgba(32,30,29,0.62)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:26px;border-top:2px dashed #ec3013"></div><div style="white-space:nowrap">PLAYOFF SINIRI — İLK 8</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:9px;height:9px;border:2px solid #201e1d;border-radius:50%;box-sizing:border-box"></div><div style="white-space:nowrap">HER NOKTA BİR HAFTA</div></div>
+    <div style="margin-left:auto;color:#201e1d;white-space:nowrap">{{ hint }}</div>
+  </div>
+  <div ref="{{ frameRef }}" style="margin-top:10px;position:relative;display:flex;align-items:flex-start;border-top:2px solid #201e1d;border-bottom:2px solid #201e1d;min-height:{{ H }}px">
+    <div style="position:relative;flex-shrink:0;width:{{ leftG }}px;height:{{ H }}px">
+      <div style="position:absolute;left:0;right:8px;top:15px;text-align:right;font-size:9px;font-weight:800;letter-spacing:0.12em;color:rgba(32,30,29,0.45)">{{ axisCap }}</div>
+      <sc-for list="{{ gutter }}" as="g" hint-placeholder-count="18">
+        <div style="position:absolute;left:0;right:8px;top:{{ g.top }}px;height:16px;line-height:16px;text-align:right;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;color:{{ g.c }}">{{ g.t }}</div>
+      </sc-for>
+    </div>
+    <div style="position:relative;flex:1;min-width:0">
+      <div ref="{{ scrollRef }}" onScroll="{{ onScroll }}" style="overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain">{{ chart }}</div>
+      <sc-if value="{{ hasPlay }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:6px;top:{{ playLabTop }}px;background:#f3f2f2;padding:2px 7px;font-size:9px;font-weight:900;letter-spacing:0.22em;color:#ec3013;pointer-events:none;white-space:nowrap">PLAYOFF SINIRI</div>
+      </sc-if>
+      <sc-if value="{{ fadeL }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:0;top:0;width:36px;height:{{ H }}px;background:linear-gradient(90deg,#f3f2f2,rgba(243,242,242,0));pointer-events:none"></div></sc-if>
+      <sc-if value="{{ fadeR }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:0;top:0;width:36px;height:{{ H }}px;background:linear-gradient(270deg,#f3f2f2,rgba(243,242,242,0));pointer-events:none"></div></sc-if>
+      <sc-if value="{{ noData }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800;letter-spacing:0.2em;color:rgba(32,30,29,0.5)">{{ statusTxt }}</div>
+      </sc-if>
+    </div>
+    <div style="position:relative;flex-shrink:0;width:{{ rightG }}px;height:{{ H }}px;border-left:1px solid rgba(32,30,29,0.16)">
+      <div style="position:absolute;left:10px;top:15px;font-size:9px;font-weight:800;letter-spacing:0.16em;color:#ec3013;white-space:nowrap">{{ lastCap }}</div>
+      <sc-if value="{{ hasPlay }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:0;right:0;top:{{ playTop }}px;border-top:2px dashed #ec3013"></div></sc-if>
+      <sc-for list="{{ labels }}" as="lb" hint-placeholder-count="18">
+        <div onClick="{{ lb.pick }}" onMouseEnter="{{ lb.enter }}" onMouseLeave="{{ lb.leave }}" style="position:absolute;left:0;right:0;top:{{ lb.top }}px;height:28px;display:flex;align-items:center;gap:8px;padding:0 8px 0 10px;box-sizing:border-box;cursor:pointer;opacity:{{ lb.op }};transition:opacity .25s">
+          <sc-if value="{{ showNames }}" hint-placeholder-val="{{ true }}"><div style="width:20px;flex-shrink:0;text-align:right;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;color:rgba(32,30,29,0.5)">{{ lb.r }}</div></sc-if>
+          <sc-if value="{{ lb.hasLogo }}" hint-placeholder-val="{{ false }}"><div style="width:28px;height:28px;flex-shrink:0;background-image:{{ lb.logoCss }};background-size:contain;background-position:center;background-repeat:no-repeat"></div></sc-if>
+          <sc-if value="{{ lb.noLogo }}" hint-placeholder-val="{{ true }}"><div style="width:28px;height:28px;flex-shrink:0;display:grid;place-items:center;font-size:9px;font-weight:900;color:{{ lb.mc }}">{{ lb.mono }}</div></sc-if>
+          <sc-if value="{{ showNames }}" hint-placeholder-val="{{ true }}"><div style="flex:1;min-width:0;font-size:14px;font-weight:{{ lb.fw }};letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lb.name }}</div></sc-if>
+          <div style="margin-left:auto;flex-shrink:0;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;color:{{ lb.dc }};white-space:nowrap">{{ lb.dt }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="margin-top:12px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;font-size:11px;font-weight:700;letter-spacing:0.14em;color:rgba(32,30,29,0.5)">
+    <div style="white-space:nowrap">{{ scrollHint }}</div>
+    <div style="white-space:nowrap">SIRALAMA: HAFTA SONU LİG TABLOSU</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;veriKlasoru&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;arsiv&quot;,&quot;test-arsiv-2&quot;,&quot;test-arsiv-17&quot;],&quot;default&quot;:&quot;arsiv&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Veri&quot;}}">
+class Component extends DCLogic {
+  state = { weeks: null, teams: null, logos: null, err: null, fw: 0, view: null, sel: null, hover: null, atStart: true, atEnd: true };
+  frameRef = React.createRef();
+  scrollRef = React.createRef();
+  SEZON_HAFTA = 17; // normal sezon uzunluğu (lig kuralı) — yalnızca ilerleme çubuğu için
+
+  measure = () => {
+    const el = this.frameRef.current;
+    if (!el) return;
+    const w = Math.round(el.getBoundingClientRect().width);
+    if (w && Math.abs(w - this.state.fw) > 1) { this._needScroll = true; this.setState({ fw: w }); }
+  };
+  observe() {
+    const el = this.frameRef.current;
+    if (!el || this._observed === el) return;
+    this._observed = el;
+    if (this.ro) this.ro.disconnect();
+    if (window.ResizeObserver) { this.ro = new ResizeObserver(() => this.measure()); this.ro.observe(el); }
+    this.measure();
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.measure);
+    this.observe();
+    this.load();
+  }
+  componentWillUnmount() { if (this.ro) this.ro.disconnect(); window.removeEventListener('resize', this.measure); }
+  componentDidUpdate(pp) {
+    this.observe();
+    if (pp.veriKlasoru !== this.props.veriKlasoru) {
+      this.setState({ weeks: null, logos: null, sel: null, hover: null, view: null });
+      this.load();
+      return;
+    }
+    const el = this.scrollRef.current;
+    if (this._needScroll && el && this.state.weeks) {
+      this._needScroll = false;
+      el.scrollLeft = el.scrollWidth;
+      this.updFade();
+    }
+  }
+
+  dir() {
+    let q = null;
+    try { q = new URLSearchParams(location.search).get('arsiv'); } catch (e) {}
+    const d = q || this.props.veriKlasoru || 'arsiv';
+    return /^[\w-]+$/.test(d) ? d : 'arsiv';
+  }
+
+  async load() {
+    const tok = (this._tok = (this._tok || 0) + 1);
+    const dir = this.dir(), bust = '';
+    try {
+      const [man, data] = await Promise.all([import(`./${dir}/haftalar.js${bust}`), import('./tnba-data.js')]);
+      const list = [...(man.HAFTALAR || [])].sort((a, b) => a.hafta - b.hafta);
+      const mods = await Promise.all(list.map(w => import(`./${dir}/` + String(w.dosya).replace(/^\.\//, '') + bust)));
+      if (tok !== this._tok) return;
+      const weeks = list.map((w, i) => {
+        const ranks = {};
+        ((mods[i].WEEK && mods[i].WEEK.standings) || []).forEach(s => { if (s && s.n != null) ranks[s.n] = s.r; });
+        return { hafta: w.hafta, ranks };
+      });
+      this._needScroll = true;
+      this.setState({ weeks, teams: data.TEAMS || {}, err: null });
+      const fx = await import('./tnba-logo-fx.js');
+      const T = await fx.processTeams(data.TEAMS || {});
+      if (tok !== this._tok) return;
+      const logos = {};
+      await Promise.all(Object.keys(T).map(async k => {
+        const u = T[k][2];
+        if (!u) return;
+        try { const b = await (await fetch(u)).blob(); logos[k] = URL.createObjectURL(b); } catch (e) { logos[k] = u; }
+      }));
+      if (tok !== this._tok) return;
+      this.setState({ logos });
+    } catch (e) {
+      if (tok === this._tok) this.setState({ err: String((e && e.message) || e), weeks: [] });
+    }
+  }
+
+  updFade = () => {
+    const el = this.scrollRef.current;
+    if (!el) return;
+    const atStart = el.scrollLeft < 4;
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+    if (atStart !== this.state.atStart || atEnd !== this.state.atEnd) this.setState({ atStart, atEnd });
+  };
+
+  renderVals() {
+    const S = this.state, h = React.createElement;
+    const INK = '#201e1d', BG = '#f3f2f2', RED = '#ec3013', RED7 = '#a02613';
+    const weeks = S.weeks || [];
+    const n = weeks.length;
+    const TEAMS = S.teams || {};
+    const fw = S.fw || 1092;
+    const mobile = fw < 640;
+
+    const set = new Set();
+    weeks.forEach(w => Object.keys(w.ranks).forEach(k => set.add(k)));
+    const names = [...set];
+    const col = nm => (TEAMS[nm] && TEAMS[nm][1]) || '#8a8580';
+    const mono = nm => (TEAMS[nm] && TEAMS[nm][0]) || String(nm).slice(0, 2).toUpperCase();
+    const logo = nm => (S.logos && S.logos[nm]) || '';
+    const lastW = n ? weeks[n - 1] : null, prevW = n > 1 ? weeks[n - 2] : null;
+    const lum = hex => { const m = /^#?([\da-f]{6})$/i.exec(hex); if (!m) return 0.3; const v = parseInt(m[1], 16); return (0.2126 * (v >> 16 & 255) + 0.7152 * (v >> 8 & 255) + 0.0722 * (v & 255)) / 255; };
+
+    const opts = [];
+    if (n > 5) opts.push(['son5', 'SON 5 HAFTA']);
+    if (n > 10) opts.push(['son10', 'SON 10']);
+    opts.push(['tum', 'TÜM SEZON']);
+    const view = opts.some(o => o[0] === S.view) ? S.view : (mobile && n > 5 ? 'son5' : 'tum');
+    const start = view === 'son5' ? n - 5 : view === 'son10' ? n - 10 : 0;
+    const vis = weeks.slice(Math.max(0, start));
+    const nv = vis.length;
+    const views = opts.map(([k, l]) => ({
+      l, bg: k === view ? INK : 'transparent', fg: k === view ? BG : INK,
+      pick: e => { e.stopPropagation(); this._needScroll = true; this.setState({ view: k }); }
+    }));
+
+    const leftG = mobile ? 30 : 44, rightG = mobile ? 84 : 252, rowH = mobile ? 30 : 36;
+    const headH = 42, padT = 16, padX = mobile ? 18 : 28, minPitch = mobile ? 46 : 48;
+    let maxR = 18;
+    weeks.forEach(w => Object.values(w.ranks).forEach(r => { if (r > maxR) maxR = r; }));
+    const avail = Math.max(140, fw - leftG - rightG);
+    let pitch = 0, cw = avail;
+    if (nv > 1) { pitch = Math.max(minPitch, (avail - 2 * padX) / (nv - 1)); cw = Math.max(avail, Math.ceil(pitch * (nv - 1) + 2 * padX)); }
+    const X = i => (nv > 1 ? padX + i * pitch : cw / 2);
+    const Y = r => headH + padT + (r - 1) * rowH;
+    const H = Math.round(headH + 2 * padT + (maxR - 1) * rowH);
+    const scrollable = cw > avail + 1;
+    const active = S.sel || S.hover;
+    const longLab = nv <= 1 || pitch >= 86;
+
+    const pick = nm => e => { e.stopPropagation(); this.setState(s => ({ sel: s.sel === nm ? null : nm, hover: null })); };
+    const enter = nm => () => { if (!this.state.sel && this.state.hover !== nm) this.setState({ hover: nm }); };
+    const leave = () => { if (this.state.hover) this.setState({ hover: null }); };
+
+    const lines = names.map(nm => {
+      const pts = vis.map((w, i) => (w.ranks[nm] != null ? { x: X(i), y: Y(w.ranks[nm]), r: w.ranks[nm] } : null));
+      let d = '', p0 = null;
+      pts.forEach(p => {
+        if (!p) { p0 = null; return; }
+        if (!p0) d += `M${p.x.toFixed(1)},${p.y}`;
+        else { const dx = (p.x - p0.x) * 0.5; d += ` C${(p0.x + dx).toFixed(1)},${p0.y} ${(p.x - dx).toFixed(1)},${p.y} ${p.x.toFixed(1)},${p.y}`; }
+        p0 = p;
+      });
+      const lr = (lastW && lastW.ranks[nm]) || 99;
+      return { nm, pts: pts.filter(Boolean), d, lr };
+    });
+    lines.sort((a, b) => (a.nm === active) - (b.nm === active) || b.lr - a.lr);
+
+    const baseW = mobile ? 5 : 6.5, baseC = mobile ? 9 : 11.5, beadR = mobile ? 3.3 : 4.2;
+    const els = [];
+    for (let r = 1; r <= maxR; r++) els.push(h('line', { key: 'h' + r, x1: 0, x2: cw, y1: Y(r), y2: Y(r), stroke: 'rgba(32,30,29,0.055)', strokeWidth: 1 }));
+    if (nv) {
+      const bw = nv > 1 ? Math.min(pitch * 0.72, 46) : 46;
+      els.push(h('rect', { key: 'band', x: X(nv - 1) - bw / 2, y: headH, width: bw, height: H - headH, fill: 'rgba(236,48,19,0.06)' }));
+    }
+    const stepL = pitch && pitch < 34 ? 2 : 1;
+    vis.forEach((w, i) => {
+      const last = i === nv - 1;
+      els.push(h('line', { key: 'v' + i, x1: X(i), x2: X(i), y1: headH, y2: H, stroke: 'rgba(32,30,29,0.07)', strokeWidth: 1 }));
+      const anc = longLab && nv > 1 ? (i === 0 ? 'start' : last ? 'end' : 'middle') : 'middle';
+      const ax = anc === 'start' ? X(i) - 8 : anc === 'end' ? X(i) + 8 : X(i);
+      if (i % stepL === 0 || last) els.push(h('text', { key: 't' + i, x: ax, y: 26, textAnchor: anc, fontSize: longLab ? 11 : 12, fontWeight: last ? 900 : 700, letterSpacing: longLab ? '0.12em' : '0.02em', fill: last ? RED : 'rgba(32,30,29,0.55)' }, longLab ? `${w.hafta}. HAFTA` : String(w.hafta)));
+    });
+    els.push(h('line', { key: 'hb', x1: 0, x2: cw, y1: headH, y2: headH, stroke: 'rgba(32,30,29,0.22)', strokeWidth: 1 }));
+    const hasPlay = maxR > 8 && n > 0;
+    if (hasPlay) els.push(h('line', { key: 'po', x1: 0, x2: cw, y1: Y(8.5), y2: Y(8.5), stroke: RED, strokeWidth: 1.6, strokeDasharray: '6 5' }));
+    lines.forEach(L => {
+      const on = L.nm === active, dim = !!active && !on, c = col(L.nm);
+      els.push(h('g', { key: 'L' + L.nm, opacity: dim ? 0.1 : 1, style: { cursor: 'pointer', transition: 'opacity .25s' }, onClick: pick(L.nm), onMouseEnter: enter(L.nm), onMouseLeave: leave },
+        h('path', { d: L.d, fill: 'none', stroke: BG, strokeWidth: on ? baseC + 3 : baseC, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+        h('path', { d: L.d, fill: 'none', stroke: c, strokeWidth: on ? baseW + 2.5 : baseW, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+        h('path', { d: L.d, fill: 'none', stroke: 'rgba(0,0,0,0)', strokeWidth: 18, style: { pointerEvents: 'stroke' } }),
+        ...L.pts.map((p, i) => h('circle', { key: i, cx: p.x, cy: p.y, r: on ? 0.01 : beadR, fill: BG, stroke: c, strokeWidth: mobile ? 2 : 2.4 }))
+      ));
+    });
+    if (active) {
+      const L = lines.find(l => l.nm === active);
+      if (L) {
+        const c = col(L.nm), tc = lum(c) > 0.58 ? INK : '#ffffff', rr = mobile ? 10 : 12;
+        L.pts.forEach((p, i) => els.push(h('g', { key: 'n' + i, style: { pointerEvents: 'none' } },
+          h('circle', { cx: p.x, cy: p.y, r: rr, fill: c, stroke: BG, strokeWidth: 2.5 }),
+          h('text', { x: p.x, y: p.y + 4, textAnchor: 'middle', fontSize: mobile ? 10 : 11.5, fontWeight: 800, fill: tc }, String(p.r))
+        )));
+      }
+    }
+    const chart = h('svg', { width: cw, height: H, style: { display: 'block', fontFamily: "var(--font-body,'Archivo',sans-serif)", fontVariantNumeric: 'tabular-nums' } }, ...els);
+
+    const gutter = [];
+    for (let r = 1; r <= maxR; r++) gutter.push({ top: Y(r) - 8, t: r, c: r <= 8 ? 'rgba(32,30,29,0.78)' : 'rgba(32,30,29,0.38)' });
+
+    const delta = nm => (prevW && prevW.ranks[nm] != null && lastW && lastW.ranks[nm] != null ? prevW.ranks[nm] - lastW.ranks[nm] : null);
+    const ranked = lastW ? names.filter(nm => lastW.ranks[nm] != null).sort((a, b) => lastW.ranks[a] - lastW.ranks[b]) : [];
+    const labels = ranked.map((nm, i) => {
+      const d = delta(nm);
+      return {
+        top: Y(i + 1) - 14, r: lastW.ranks[nm], name: nm, logo: logo(nm), logoCss: logo(nm) ? `url("${logo(nm)}")` : 'none', hasLogo: !!logo(nm), noLogo: !logo(nm), mono: mono(nm), mc: col(nm),
+        dt: d == null ? '' : d > 0 ? `▲${d}` : d < 0 ? `▼${-d}` : '—',
+        dc: d > 0 ? INK : d < 0 ? RED7 : 'rgba(32,30,29,0.35)',
+        op: active && active !== nm ? 0.2 : 1, fw: active === nm ? 900 : 700,
+        pick: pick(nm), enter: enter(nm), leave
+      };
+    });
+
+    const cards = [];
+    if (lastW) {
+      const leader = ranked[0];
+      if (leader) {
+        let streak = 0;
+        for (let i = n - 1; i >= 0 && weeks[i].ranks[leader] === 1; i--) streak++;
+        const pr = prevW ? prevW.ranks[leader] : null;
+        cards.push({ kicker: `${lastW.hafta}. HAFTA LİDERİ`, team: leader, big: '1.', bc: RED,
+          sub: streak > 1 ? `${streak} haftadır zirvede` : pr ? `${pr}. sıradan zirveye çıktı` : 'Sezonun ilk lideri', nm: leader });
+      }
+      if (prevW) {
+        let up = null, dn = null;
+        ranked.forEach(nm => { const d = delta(nm); if (d == null) return; if (d > 0 && (!up || d > up.d)) up = { nm, d }; if (d < 0 && (!dn || d < dn.d)) dn = { nm, d }; });
+        if (up) cards.push({ kicker: 'HAFTANIN YÜKSELİŞİ', team: up.nm, big: `+${up.d}`, bc: INK, sub: `${prevW.ranks[up.nm]}. → ${lastW.ranks[up.nm]}. sıra`, nm: up.nm });
+        if (dn) cards.push({ kicker: 'HAFTANIN DÜŞÜŞÜ', team: dn.nm, big: `−${-dn.d}`, bc: RED7, sub: `${prevW.ranks[dn.nm]}. → ${lastW.ranks[dn.nm]}. sıra`, nm: dn.nm });
+      }
+    }
+    cards.forEach(k => { k.logo = logo(k.nm); k.logoCss = k.logo ? `url("${k.logo}")` : 'none'; k.hasLogo = !!k.logo; k.pick = pick(k.nm); k.bd = S.sel === k.nm ? INK : 'rgba(32,30,29,0.22)'; });
+
+    const selNm = S.sel && set.has(S.sel) ? S.sel : null;
+    let det = { name: '', logo: '', logoCss: 'none', hasLogo: false, stats: [] };
+    if (selNm) {
+      const hist = weeks.map(w => ({ h: w.hafta, r: w.ranks[selNm] })).filter(x => x.r != null);
+      const best = hist.reduce((a, b) => (b.r < a.r ? b : a), hist[0]);
+      const worst = hist.reduce((a, b) => (b.r > a.r ? b : a), hist[0]);
+      const po = hist.filter(x => x.r <= 8).length;
+      const d = delta(selNm);
+      det = {
+        name: selNm, logo: logo(selNm), logoCss: logo(selNm) ? `url("${logo(selNm)}")` : 'none', hasLogo: !!logo(selNm),
+        stats: [
+          { l: 'ŞU AN', v: lastW && lastW.ranks[selNm] != null ? `${lastW.ranks[selNm]}.${d ? (d > 0 ? '  ▲' + d : '  ▼' + -d) : ''}` : '—' },
+          { l: 'EN İYİ', v: `${best.r}. · ${best.h}. hafta` },
+          { l: 'EN KÖTÜ', v: `${worst.r}. · ${worst.h}. hafta` },
+          { l: 'PLAYOFF ALANINDA', v: `${po} / ${hist.length} hafta` }
+        ]
+      };
+    }
+
+    const lastH = lastW ? lastW.hafta : 0;
+    const prog = [...Array(this.SEZON_HAFTA)].map((_, i) => ({ bg: i < lastH ? (i === lastH - 1 ? RED : INK) : 'rgba(32,30,29,0.14)' }));
+    const progTxt = lastW ? `${lastH}. HAFTA / ${this.SEZON_HAFTA} · ${names.length} TAKIM` : 'VERİ YÜKLENİYOR';
+
+    return {
+      prog, progTxt, views, hasViews: n > 1 && opts.length > 1, cards,
+      hasDetail: !!selNm, det,
+      hint: active ? (mobile ? 'Boşluğa dokun: sıfırla' : 'Boşluğa tıkla: tüm takımlar') : (mobile ? 'Takıma dokun: yolunu izle' : 'Bir takıma tıkla: yolu ve haftalık sıraları belirir'),
+      frameRef: this.frameRef, scrollRef: this.scrollRef, onScroll: this.updFade, chart,
+      H, leftG, rightG, axisCap: longLab || mobile ? '' : 'HAFTA', gutter,
+      hasPlay, playTop: Y(8.5) - 1, playLabTop: Y(8.5) - 8,
+      fadeL: scrollable && !S.atStart, fadeR: scrollable && !S.atEnd,
+      noData: !n, statusTxt: S.err ? 'ARŞİV OKUNAMADI' : S.weeks ? 'ARŞİVDE HAFTA YOK' : 'YÜKLENİYOR…',
+      lastCap: lastW ? (mobile ? `${lastH}. H` : `${lastH}. HAFTA SONU`) : '',
+      labels, showNames: !mobile,
+      scrollHint: scrollable ? (mobile ? '← ÖNCEKİ HAFTALAR İÇİN KAYDIR' : '← ÖNCEKİ HAFTALAR İÇİN YATAY KAYDIR') : (lastW ? `${vis[0].hafta}–${lastH}. HAFTA GÖSTERİLİYOR`.replace(`${lastH}–${lastH}`, `${lastH}`) : ''),
+      reset: () => { if (this.state.sel || this.state.hover) this.setState({ sel: null, hover: null }); },
+      stop: e => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>
