@@ -20,9 +20,14 @@
 @media (max-width: 760px){
   .kok{ padding:22px 14px 60px !important }
   .ana{ grid-template-columns:1fr !important; gap:20px !important; padding-top:18px !important }
-  .haftalar{ flex-direction:row !important; flex-wrap:wrap !important }
-  .haftalar > div:first-child{ width:100% }
-  .sekmeler{ flex-wrap:wrap !important }
+  .ana > *{ min-width:0 }
+  .haftalar{ min-width:0; max-width:100% }
+  .hafta-serit{ flex-direction:row !important; max-height:none !important; min-width:0; max-width:100%; overflow-x:auto !important; overflow-y:hidden !important; gap:8px !important; padding:2px 2px 8px; scrollbar-width:none; -webkit-overflow-scrolling:touch }
+  .hafta-serit::-webkit-scrollbar{ display:none }
+  .hafta-cip{ flex:0 0 auto; padding:9px 13px !important; font-size:14px !important }
+  .sekmeler{ flex-wrap:nowrap !important; min-width:0; max-width:100%; overflow-x:auto !important; gap:8px !important; padding:2px 2px 8px; scrollbar-width:none; -webkit-overflow-scrolling:touch }
+  .sekmeler::-webkit-scrollbar{ display:none }
+  .sekmeler > div{ flex:0 0 auto; padding:10px 14px !important; font-size:13px !important }
   .st{ grid-template-columns:32px 38px 1fr 86px !important }
   .ustbar{ flex-wrap:wrap !important; gap:12px !important }
   .ustbar img{ width:42px !important; height:42px !important }
@@ -47,9 +52,11 @@
   <div class="ana" style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding-top:32px;align-items:start">
     <div class="haftalar" style="display:flex;flex-direction:column;gap:10px">
       <div style="font-size:13px;font-weight:800;letter-spacing:0.24em;color:rgba(32,30,29,0.5);margin-bottom:4px">HAFTALAR</div>
+      <div class="hafta-serit" style="display:flex;flex-direction:column;gap:10px;max-height:460px;overflow-y:auto">
       <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="1">
-        <div onClick="{{ w.pick }}" style="cursor:pointer;padding:13px 16px;border:1px solid rgba(32,30,29,0.35);font-size:16px;font-weight:800;letter-spacing:0.1em;background:{{ w.bg }};color:{{ w.fg }}" style-hover="border-color:#201e1d">{{ w.label }}</div>
+        <div onClick="{{ w.pick }}" class="hafta-cip" style="cursor:pointer;padding:13px 16px;border:1px solid rgba(32,30,29,0.35);font-size:16px;font-weight:800;letter-spacing:0.1em;background:{{ w.bg }};color:{{ w.fg }};white-space:nowrap" style-hover="border-color:#201e1d">{{ w.label }}</div>
       </sc-for>
+      </div>
     </div>
     <div style="min-width:0">
       <div class="sekmeler" style="display:flex;gap:10px;margin-bottom:26px">
