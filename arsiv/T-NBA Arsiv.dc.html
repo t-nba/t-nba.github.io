@@ -16,40 +16,59 @@
 <helmet>
 <link rel="stylesheet" href="_ds/modernist-785da292-216d-47a9-800f-8e6c4680f25f/styles.css">
 <script src="_ds/modernist-785da292-216d-47a9-800f-8e6c4680f25f/_ds_bundle.js"></script>
+<style>
+@media (max-width: 760px){
+  .kok{ padding:22px 14px 60px !important }
+  .ana{ grid-template-columns:1fr !important; gap:20px !important; padding-top:18px !important }
+  .haftalar{ flex-direction:row !important; flex-wrap:wrap !important }
+  .haftalar > div:first-child{ width:100% }
+  .sekmeler{ flex-wrap:wrap !important }
+  .st{ grid-template-columns:32px 38px 1fr 86px !important }
+  .ustbar{ flex-wrap:wrap !important; gap:12px !important }
+  .ustbar img{ width:42px !important; height:42px !important }
+  .ustbar > div:nth-of-type(1){ font-size:15px !important; letter-spacing:0.06em !important }
+  .ustbar > div:last-child{ margin-left:0 !important; font-size:11px !important; padding:6px 10px !important }
+  .formh{ display:none !important }
+  .mac{ grid-template-columns:1fr 78px 1fr !important }
+  .mac > div{ font-size:16px !important }
+  .lid{ grid-template-columns:64px 1fr 96px !important }
+  .lid > div{ font-size:17px !important }
+}
+</style>
 <script src="image-slot.js"></script>
 <style>body{margin:0;background:var(--color-bg,#f3f2f2)} a{color:var(--color-accent,#ec3013);text-decoration:none} a:hover{color:var(--color-accent-700,#a02613)}</style>
 </helmet>
-<div data-screen-label="Arsiv" style="min-height:100vh;box-sizing:border-box;color:var(--color-text,#201e1d);font-family:var(--font-body,'Archivo',sans-serif);max-width:1240px;margin:0 auto;padding:44px 48px 80px">
-  <div style="display:flex;align-items:center;gap:20px;padding-bottom:20px;border-bottom:2px solid var(--color-text,#201e1d)">
+<div data-screen-label="Arsiv" class="kok" style="min-height:100vh;box-sizing:border-box;color:var(--color-text,#201e1d);font-family:var(--font-body,'Archivo',sans-serif);max-width:1240px;margin:0 auto;padding:44px 48px 80px">
+  <div class="ustbar" style="display:flex;align-items:center;gap:20px;padding-bottom:20px;border-bottom:2px solid var(--color-text,#201e1d)">
     <img src="assets/tnba-logo-pro.png" alt="T-NBA" style="width:56px;height:56px;border-radius:50%;box-shadow:0 0 0 2px var(--color-text,#201e1d)"></img>
     <div style="font-size:23px;font-weight:900;letter-spacing:0.1em">T-NBA CHAMPIONSHIP — SEZON ARŞİVİ</div>
     <div style="margin-left:auto;background:var(--color-accent,#ec3013);color:#fff;font-size:13px;font-weight:800;letter-spacing:0.18em;padding:8px 14px;white-space:nowrap">2026-27 SEZONU</div>
   </div>
-  <div style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding-top:32px;align-items:start">
-    <div style="display:flex;flex-direction:column;gap:10px">
+  <div class="ana" style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding-top:32px;align-items:start">
+    <div class="haftalar" style="display:flex;flex-direction:column;gap:10px">
       <div style="font-size:13px;font-weight:800;letter-spacing:0.24em;color:rgba(32,30,29,0.5);margin-bottom:4px">HAFTALAR</div>
       <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="1">
         <div onClick="{{ w.pick }}" style="cursor:pointer;padding:13px 16px;border:1px solid rgba(32,30,29,0.35);font-size:16px;font-weight:800;letter-spacing:0.1em;background:{{ w.bg }};color:{{ w.fg }}" style-hover="border-color:#201e1d">{{ w.label }}</div>
       </sc-for>
     </div>
     <div style="min-width:0">
-      <div style="display:flex;gap:10px;margin-bottom:26px">
+      <div class="sekmeler" style="display:flex;gap:10px;margin-bottom:26px">
         <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
           <div onClick="{{ t.pick }}" style="cursor:pointer;padding:12px 22px;border:1px solid rgba(32,30,29,0.35);font-size:15px;font-weight:800;letter-spacing:0.14em;background:{{ t.bg }};color:{{ t.fg }}" style-hover="border-color:#201e1d">{{ t.label }}</div>
         </sc-for>
       </div>
       <sc-if value="{{ isStand }}" hint-placeholder-val="{{ true }}">
         <div>
-          <div style="display:grid;grid-template-columns:64px 48px 1fr 130px 190px;align-items:center;border-top:2px solid var(--color-text,#201e1d);border-bottom:2px solid var(--color-text,#201e1d);padding:10px 0;font-size:13px;font-weight:800;letter-spacing:0.2em;color:rgba(32,30,29,0.55)">
-            <div>#</div><div></div><div>TAKIM</div><div style="text-align:right">W-L-T</div><div style="text-align:right">FORM</div>
+          <div class="st" style="display:grid;grid-template-columns:64px 48px 1fr 130px 190px;align-items:center;border-top:2px solid var(--color-text,#201e1d);border-bottom:2px solid var(--color-text,#201e1d);padding:10px 0;font-size:13px;font-weight:800;letter-spacing:0.2em;color:rgba(32,30,29,0.55)">
+            <div>#</div><div></div><div>TAKIM</div><div style="text-align:right">W-L-T</div><div class="formh" style="text-align:right">FORM</div>
           </div>
           <sc-for list="{{ rows }}" as="row" hint-placeholder-count="18">
-            <div style="display:grid;grid-template-columns:64px 48px 1fr 130px 190px;align-items:center;height:56px;border-bottom:1px solid rgba(32,30,29,0.14)">
+            <div class="st" style="display:grid;grid-template-columns:64px 48px 1fr 130px 190px;align-items:center;height:56px;border-bottom:1px solid rgba(32,30,29,0.14)">
               <div style="font-size:22px;font-weight:900;color:rgba(32,30,29,0.55)">{{ row.r }}</div>
               <img src="{{ row.logo }}" alt="" style="flex-shrink:0;width:47px;height:47px;object-fit:contain;display:block"></img>
               <div style="font-size:19px;font-weight:700;padding-left:14px;white-space:nowrap;overflow:hidden">{{ row.n }}</div>
               <div style="text-align:right;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">{{ row.rec }}</div>
-              <div style="display:flex;gap:6px;justify-content:flex-end">
+              <div class="formh" style="display:flex;gap:6px;justify-content:flex-end">
                 <sc-for list="{{ row.form }}" as="f" hint-placeholder-count="5">
                   <sc-if value="{{ f.w }}" hint-placeholder-val="{{ true }}"><div style="width:21px;height:21px;display:grid;place-items:center;background:var(--color-text,#201e1d);color:var(--color-bg,#f3f2f2);font-size:11px;font-weight:900">W</div></sc-if>
                   <sc-if value="{{ f.l }}" hint-placeholder-val="{{ false }}"><div style="width:21px;height:21px;display:grid;place-items:center;border:1px solid rgba(32,30,29,0.3);box-sizing:border-box;color:rgba(32,30,29,0.4);font-size:11px;font-weight:800">L</div></sc-if>
@@ -63,7 +82,7 @@
       <sc-if value="{{ isRes }}" hint-placeholder-val="{{ false }}">
         <div style="border-top:2px solid var(--color-text,#201e1d)">
           <sc-for list="{{ games }}" as="g" hint-placeholder-count="9">
-            <div style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:center;height:64px;border-bottom:1px solid rgba(32,30,29,0.14)">
+            <div class="mac" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:center;height:64px;border-bottom:1px solid rgba(32,30,29,0.14)">
               <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ true }}"><div style="font-size:20px;font-weight:800;white-space:nowrap;overflow:hidden">{{ g.ln }}</div></sc-if>
               <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="font-size:20px;font-weight:600;color:rgba(32,30,29,0.5);white-space:nowrap;overflow:hidden">{{ g.ln }}</div></sc-if>
               <div style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:26px;font-weight:900;font-variant-numeric:tabular-nums">
@@ -78,7 +97,7 @@
       <sc-if value="{{ isLead }}" hint-placeholder-val="{{ false }}">
         <div style="border-top:2px solid var(--color-text,#201e1d)">
           <sc-for list="{{ cats }}" as="c" hint-placeholder-count="11">
-            <div style="display:grid;grid-template-columns:200px 1fr 300px;align-items:center;height:58px;border-bottom:1px solid rgba(32,30,29,0.14)">
+            <div class="lid" style="display:grid;grid-template-columns:200px 1fr 300px;align-items:center;height:58px;border-bottom:1px solid rgba(32,30,29,0.14)">
               <div style="font-size:20px;font-weight:900">{{ c.code }}</div>
               <div style="font-size:26px;font-weight:900;font-variant-numeric:tabular-nums">{{ c.val }}</div>
               <div style="font-size:19px;font-weight:700;text-align:right;white-space:nowrap">{{ c.team }}</div>
