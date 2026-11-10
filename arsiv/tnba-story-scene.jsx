@@ -7,7 +7,19 @@ function useData() {
   const [d, setD] = React.useState(window.__TNBA_D || null);
   React.useEffect(() => {
     let ok = true;
-    if (!d) import('./tnba-data.js').then(m => { window.__TNBA_D = m; if (ok) setD(m); });
+    if (!d) Promise.all([
+        import('./tnba-data.js'),
+        import('./tnba-logo-fx.js'),
+        import('./arsiv/haftalar.js').catch(() => ({ HAFTALAR: [] }))
+      ]).then(([m, fx, man]) => Promise.all([
+        fx.processTeams(m.TEAMS),
+        Promise.all((man.HAFTALAR || []).map(w =>
+          import('./arsiv/' + w.dosya.replace('./', '')).then(h => ({ hafta: w.hafta, ranks: Object.fromEntries(h.WEEK.standings.map(x => [x.n, x.r])) })).catch(() => null)
+        ))
+      ]).then(([TP, seyir]) => {
+        window.__TNBA_D = { ...m, TEAMSP: TP, SEYIR: seyir.filter(Boolean).sort((a, b) => a.hafta - b.hafta) };
+        if (ok) setD(window.__TNBA_D);
+      }));
     return () => { ok = false; };
   }, []);
   return d;
@@ -28,8 +40,12 @@ function Piece() {
   if (!D) return null;
   const M = D.WEEK.matchups, S = D.WEEK.standings, L = D.WEEK.leaders;
   const P = D.PLAYER_LEADERS || [];
-  const Tm = D.TEAMS || {};
+  const Tm = D.TEAMSP || D.TEAMS || {};
   const F = (D.FIXTURES && D.FIXTURES.pairs) || [];
+  // Logo rozeti: işlenmiş logo varsa onu, yoksa renkli monogram kutusu
+  const rozet = (tk, boy) => tk && tk[2]
+    ? React.createElement('img', { src: tk[2], style: { width: boy, height: boy, objectFit: 'contain', flexShrink: 0, display: 'block' } })
+    : React.createElement('div', { style: { width: boy, height: boy, border: `2px solid ${(tk || [])[1] || '#999'}`, boxSizing: 'border-box', display: 'grid', placeItems: 'center', fontSize: Math.round(boy * 0.3), fontWeight: 800, background: '#fbfaf9', flexShrink: 0 } }, (tk || ['?'])[0]);
   const hafta = D.WEEK.hafta;
   const nextHafta = (D.FIXTURES && D.FIXTURES.hafta) || hafta + 1;
   const rootOp = animate({ from: 1, to: 0, start: authoredTotal - 0.5, end: authoredTotal - 0.05, ease: Easing.easeInQuad })(T);
@@ -82,9 +98,9 @@ function Piece() {
       )
     ),
     // Puan durumu — takımlar GEÇEN haftaki sıralarından yeni sıralarına KAYAR
-    React.createElement(Shot, { from: CUES.Ilk3 - 0.2, to: CUES.Enler + 0.4 },
+    React.createElement(Shot, { from: CUES.Ilk3 - 0.2, to: CUES.Seyir + 0.4 },
       kicker('PUAN DURUMU', CUES.Ilk3 + 0.1),
-      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 226, height: 18 * 80 + 40, opacity: MO.fade(CUES.Enler - 0.5)(T) } },
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 226, height: 18 * 80 + 40, opacity: MO.fade(CUES.Seyir - 0.5)(T) } },
         (() => {
           const laneH = 80;
           const yPos = r => (r - 1) * laneH + (r > 8 ? 36 : 0);
@@ -99,7 +115,7 @@ function Piece() {
             const Tk = Tm[s.n] || ['?', '#999', null];
             return React.createElement('div', { key: s.n, style: { position: 'absolute', left: 0, right: 0, top: y, height: laneH, display: 'grid', gridTemplateColumns: '56px 46px 1fr auto 72px', alignItems: 'center', columnGap: 16, borderBottom: '1px solid rgba(32,30,29,0.12)', opacity: giris.opacity, background: BG } },
               React.createElement('div', { style: { fontSize: 32, fontWeight: 900, color: s.r <= 3 ? RED : 'rgba(32,30,29,0.45)' } }, s.r),
-              React.createElement('div', { style: { width: 42, height: 42, border: `2px solid ${Tk[1]}`, boxSizing: 'border-box', display: 'grid', placeItems: 'center', fontSize: 13, fontWeight: 800, background: '#fbfaf9' } }, Tk[0]),
+              rozet(Tk, 44),
               React.createElement('div', { style: { fontSize: 29, fontWeight: s.r <= 8 ? 800 : 600, whiteSpace: 'nowrap', overflow: 'hidden', color: s.r <= 8 ? INK : 'rgba(32,30,29,0.55)' } }, s.n),
               React.createElement('div', { style: { fontSize: 23, fontWeight: 800, color: DIM, fontVariantNumeric: 'tabular-nums' } }, s.rec),
               React.createElement('div', { style: { textAlign: 'right', fontSize: 20, fontWeight: 900, opacity: chipOp, color: fark > 0 ? RED : fark < 0 ? 'rgba(32,30,29,0.4)' : 'rgba(32,30,29,0.25)' } },
@@ -111,6 +127,47 @@ function Piece() {
             React.createElement('div', { style: { flex: 1, height: 2, background: RED, opacity: cizgiPulse } })
           ));
           return satirlar;
+        })()
+      )
+    ),
+    // Sıralama Seyri — kavisli yollar kendini çizer (Claude Design dilinde)
+    React.createElement(Shot, { from: CUES.Seyir - 0.2, to: CUES.Enler + 0.4 },
+      kicker('SIRALAMA SEYRİ', CUES.Seyir + 0.1),
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 250, opacity: MO.fade(CUES.Enler - 0.5)(T) } },
+        (() => {
+          const H = D.SEYIR || [];
+          if (!H.length) return null;
+          const W = 952, laneH = 76, TOP = 44, solPad = 46, sagPad = 140;
+          const yF = r => TOP + (r - 0.5) * laneH;
+          const xF = i => H.length === 1 ? solPad + (W - solPad - sagPad) / 2 : solPad + i * (W - solPad - sagPad) / (H.length - 1);
+          const cizim = animate({ from: 0, to: 1, start: CUES.Seyir + 0.5, end: CUES.Seyir + 2.9, ease: Easing.easeInOutCubic })(T);
+          const svgCocuk = [];
+          H.forEach((h, i) => {
+            svgCocuk.push(React.createElement('line', { key: 'g' + i, x1: xF(i), y1: TOP - 8, x2: xF(i), y2: TOP + 18 * laneH, stroke: 'rgba(32,30,29,0.08)', strokeWidth: 1.5 }));
+            svgCocuk.push(React.createElement('text', { key: 'h' + i, x: xF(i), y: TOP - 20, textAnchor: 'middle', fontSize: 17, fontWeight: 800, letterSpacing: 2, fill: 'rgba(32,30,29,0.5)' }, h.hafta + '. HAFTA'));
+          });
+          for (let r = 1; r <= 18; r++) svgCocuk.push(React.createElement('text', { key: 'n' + r, x: solPad - 18, y: yF(r) + 6, textAnchor: 'end', fontSize: 17, fontWeight: 800, fill: 'rgba(32,30,29,' + (r <= 8 ? 0.55 : 0.28) + ')' }, r));
+          svgCocuk.push(React.createElement('line', { key: 'po', x1: solPad - 10, y1: TOP + 8 * laneH, x2: W - sagPad + 24, y2: TOP + 8 * laneH, stroke: '#ec3013', strokeWidth: 3, strokeDasharray: '10 7' }));
+          svgCocuk.push(React.createElement('text', { key: 'pt', x: solPad - 10, y: TOP + 8 * laneH - 10, fontSize: 13, fontWeight: 900, letterSpacing: 3, fill: '#ec3013' }, 'PLAYOFF SINIRI'));
+          Object.keys(Tm).forEach((t, ti) => {
+            const pts = H.map((h, i) => h.ranks[t] ? [xF(i), yF(h.ranks[t])] : null).filter(Boolean);
+            if (!pts.length) return;
+            let yol = 'M ' + pts[0][0] + ' ' + pts[0][1];
+            for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], mx = (a[0] + b[0]) / 2; yol += ' C ' + mx + ' ' + a[1] + ', ' + mx + ' ' + b[1] + ', ' + b[0] + ' ' + b[1]; }
+            const prog = clamp(cizim * 1.12 - ti * 0.007, 0, 1);
+            svgCocuk.push(React.createElement('path', { key: 'y' + t, d: yol, fill: 'none', stroke: Tm[t][1], strokeWidth: 5.5, strokeLinecap: 'round', pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - prog }));
+            pts.forEach((pnokta, pi) => svgCocuk.push(React.createElement('circle', { key: 'c' + t + pi, cx: pnokta[0], cy: pnokta[1], r: 7, fill: Tm[t][1], stroke: '#f3f2f2', strokeWidth: 2.5, opacity: prog >= (pi / Math.max(pts.length - 1, 1)) * 0.95 ? 1 : 0 })));
+          });
+          const cocuklar = [React.createElement('svg', { key: 'svg', width: W, height: TOP + 18 * laneH + 10, viewBox: '0 0 ' + W + ' ' + (TOP + 18 * laneH + 10), style: { display: 'block', fontFamily: 'inherit' } }, svgCocuk)];
+          const logoOp = animate({ from: 0, to: 1, start: CUES.Seyir + 2.7, end: CUES.Seyir + 3.2 })(T);
+          Object.keys(Tm).forEach(t => {
+            const son = H[H.length - 1].ranks[t];
+            if (!son) return;
+            cocuklar.push(React.createElement('div', { key: 'l' + t, style: { position: 'absolute', left: W - sagPad + 34, top: yF(son) - 24, display: 'flex', alignItems: 'center', gap: 10, opacity: logoOp } },
+              rozet(Tm[t], 48),
+              React.createElement('div', { style: { fontSize: 19, fontWeight: 900, color: son <= 8 ? INK : 'rgba(32,30,29,0.45)' } }, son)));
+          });
+          return cocuklar;
         })()
       )
     ),
@@ -161,7 +218,7 @@ function Piece() {
           const at = CUES.Fikstur + 0.25 + i * 0.32;
           const e = MO.enter(at, 0.55)(T);
           const A = Tm[c[0]] || ['?', '#999'], B = Tm[c[1]] || ['?', '#999'];
-          const chip = (tk) => React.createElement('div', { style: { width: 40, height: 40, border: `2px solid ${tk[1]}`, boxSizing: 'border-box', display: 'grid', placeItems: 'center', fontSize: 12, fontWeight: 800, background: '#fbfaf9', flexShrink: 0 } }, tk[0]);
+          const chip = (tk) => rozet(tk, 46);
           return React.createElement('div', { key: i, style: { display: 'grid', gridTemplateColumns: '1fr 110px 1fr', alignItems: 'center', height: 148, borderBottom: '1px solid rgba(32,30,29,0.14)', opacity: e.opacity, transform: `translateY(${e.y}px)` } },
             React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'flex-end', minWidth: 0 } },
               React.createElement('div', { style: { fontSize: 27, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textAlign: 'right' } }, c[0]), chip(A)),
