@@ -28,6 +28,8 @@ function Piece() {
   if (!D) return null;
   const M = D.WEEK.matchups, S = D.WEEK.standings, L = D.WEEK.leaders;
   const P = D.PLAYER_LEADERS || [];
+  const Tm = D.TEAMS || {};
+  const F = (D.FIXTURES && D.FIXTURES.pairs) || [];
   const hafta = D.WEEK.hafta;
   const nextHafta = (D.FIXTURES && D.FIXTURES.hafta) || hafta + 1;
   const rootOp = animate({ from: 1, to: 0, start: authoredTotal - 0.5, end: authoredTotal - 0.05, ease: Easing.easeInQuad })(T);
@@ -79,28 +81,37 @@ function Piece() {
         })
       )
     ),
-    // Puan durumu — 18 takım
+    // Puan durumu — takımlar GEÇEN haftaki sıralarından yeni sıralarına KAYAR
     React.createElement(Shot, { from: CUES.Ilk3 - 0.2, to: CUES.Enler + 0.4 },
       kicker('PUAN DURUMU', CUES.Ilk3 + 0.1),
-      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 232, opacity: MO.fade(CUES.Enler - 0.5)(T), transform: `translateY(${animate({ from: 18, to: -26, start: CUES.Ilk3 + 0.4, end: CUES.Enler - 0.4 })(T)}px)` } },
-        S.map((s, i) => {
-          const at = CUES.Ilk3 + 0.2 + i * 0.11;
-          const e = MO.enter(at, 0.45)(T);
-          const row = React.createElement('div', { key: 'r' + i, style: { display: 'grid', gridTemplateColumns: '64px 1fr auto', alignItems: 'center', columnGap: 18, height: 76, borderBottom: '1px solid rgba(32,30,29,0.14)', opacity: e.opacity, transform: `translateY(${e.y}px)` } },
-            React.createElement('div', { style: { fontSize: 32, fontWeight: 900, color: s.r <= 3 ? RED : 'rgba(32,30,29,0.45)' } }, s.r),
-            React.createElement('div', { style: { fontSize: 30, fontWeight: s.r <= 8 ? 800 : 600, whiteSpace: 'nowrap', overflow: 'hidden', color: s.r <= 8 ? INK : 'rgba(32,30,29,0.55)' } }, s.n),
-            React.createElement('div', { style: { fontSize: 24, fontWeight: 800, color: DIM, fontVariantNumeric: 'tabular-nums', letterSpacing: '0.04em' } }, s.rec)
-          );
-          if (s.r !== 8) return row;
-          const de = MO.enter(at + 0.2, 0.45)(T);
-          const pulse = 0.75 + 0.25 * Math.sin((T - CUES.Ilk3) * 2.4);
-          return React.createElement('div', { key: 'w' + i }, row,
-            React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, height: 34, opacity: de.opacity } },
-              React.createElement('div', { style: { fontSize: 13, fontWeight: 900, letterSpacing: '0.3em', color: RED, whiteSpace: 'nowrap' } }, 'PLAYOFF SINIRI'),
-              React.createElement('div', { style: { flex: 1, height: 2, background: RED, opacity: pulse } })
-            )
-          );
-        })
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 226, height: 18 * 80 + 40, opacity: MO.fade(CUES.Enler - 0.5)(T) } },
+        (() => {
+          const laneH = 80;
+          const yPos = r => (r - 1) * laneH + (r > 8 ? 36 : 0);
+          const kaySlut = Easing.easeInOutCubic;
+          const cizgiPulse = 0.75 + 0.25 * Math.sin((T - CUES.Ilk3) * 2.4);
+          const satirlar = S.map((s, i) => {
+            const prev = s.prev || s.r;
+            const giris = MO.enter(CUES.Ilk3 + 0.15 + (prev - 1) * 0.045, 0.4)(T);
+            const y = animate({ from: yPos(prev), to: yPos(s.r), start: CUES.Ilk3 + 1.0 + i * 0.03, end: CUES.Ilk3 + 2.6 + i * 0.03, ease: kaySlut })(T);
+            const fark = prev - s.r;
+            const chipOp = animate({ from: 0, to: 1, start: CUES.Ilk3 + 2.9, end: CUES.Ilk3 + 3.3 })(T);
+            const Tk = Tm[s.n] || ['?', '#999', null];
+            return React.createElement('div', { key: s.n, style: { position: 'absolute', left: 0, right: 0, top: y, height: laneH, display: 'grid', gridTemplateColumns: '56px 46px 1fr auto 72px', alignItems: 'center', columnGap: 16, borderBottom: '1px solid rgba(32,30,29,0.12)', opacity: giris.opacity, background: BG } },
+              React.createElement('div', { style: { fontSize: 32, fontWeight: 900, color: s.r <= 3 ? RED : 'rgba(32,30,29,0.45)' } }, s.r),
+              React.createElement('div', { style: { width: 42, height: 42, border: `2px solid ${Tk[1]}`, boxSizing: 'border-box', display: 'grid', placeItems: 'center', fontSize: 13, fontWeight: 800, background: '#fbfaf9' } }, Tk[0]),
+              React.createElement('div', { style: { fontSize: 29, fontWeight: s.r <= 8 ? 800 : 600, whiteSpace: 'nowrap', overflow: 'hidden', color: s.r <= 8 ? INK : 'rgba(32,30,29,0.55)' } }, s.n),
+              React.createElement('div', { style: { fontSize: 23, fontWeight: 800, color: DIM, fontVariantNumeric: 'tabular-nums' } }, s.rec),
+              React.createElement('div', { style: { textAlign: 'right', fontSize: 20, fontWeight: 900, opacity: chipOp, color: fark > 0 ? RED : fark < 0 ? 'rgba(32,30,29,0.4)' : 'rgba(32,30,29,0.25)' } },
+                fark > 0 ? '▲' + fark : fark < 0 ? '▼' + (-fark) : '—')
+            );
+          });
+          satirlar.push(React.createElement('div', { key: 'playoff', style: { position: 'absolute', left: 0, right: 0, top: 8 * laneH + 2, display: 'flex', alignItems: 'center', gap: 14, height: 32, opacity: MO.enter(CUES.Ilk3 + 0.9, 0.45)(T).opacity } },
+            React.createElement('div', { style: { fontSize: 13, fontWeight: 900, letterSpacing: '0.3em', color: RED, whiteSpace: 'nowrap' } }, 'PLAYOFF SINIRI'),
+            React.createElement('div', { style: { flex: 1, height: 2, background: RED, opacity: cizgiPulse } })
+          ));
+          return satirlar;
+        })()
       )
     ),
     // En'ler (takım)
@@ -122,9 +133,9 @@ function Piece() {
       )
     ),
     // Oyuncu liderleri
-    React.createElement(Shot, { from: CUES.OyuncuEnleri - 0.2, to: CUES.Kapanis + 0.3 },
+    React.createElement(Shot, { from: CUES.OyuncuEnleri - 0.2, to: CUES.Fikstur + 0.4 },
       kicker('OYUNCU LİDERLERİ', CUES.OyuncuEnleri + 0.1),
-      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 236, opacity: MO.fade(CUES.Kapanis - 0.45)(T) } },
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 236, opacity: MO.fade(CUES.Fikstur - 0.5)(T) } },
         P.map((c, i) => {
           const at = CUES.OyuncuEnleri + 0.25 + i * 0.28;
           const e = MO.enter(at, 0.5)(T);
@@ -138,6 +149,27 @@ function Piece() {
               React.createElement('div', { style: { fontSize: 19, fontWeight: 700, color: DIM, letterSpacing: '0.08em', textTransform: 'uppercase' } }, c[4] || '')
             ),
             React.createElement('div', { style: { fontSize: 54, fontWeight: 900, fontVariantNumeric: 'tabular-nums', textAlign: 'right' } }, shown)
+          );
+        })
+      )
+    ),
+    // Gelecek haftanın fikstürü
+    React.createElement(Shot, { from: CUES.Fikstur - 0.2, to: CUES.Kapanis + 0.3 },
+      kicker('SIRADAKİ RAKİPLER — ' + nextHafta + '. HAFTA', CUES.Fikstur + 0.1),
+      React.createElement('div', { style: { position: 'absolute', left: 64, right: 64, top: 240, opacity: MO.fade(CUES.Kapanis - 0.45)(T) } },
+        F.map((c, i) => {
+          const at = CUES.Fikstur + 0.25 + i * 0.32;
+          const e = MO.enter(at, 0.55)(T);
+          const A = Tm[c[0]] || ['?', '#999'], B = Tm[c[1]] || ['?', '#999'];
+          const chip = (tk) => React.createElement('div', { style: { width: 40, height: 40, border: `2px solid ${tk[1]}`, boxSizing: 'border-box', display: 'grid', placeItems: 'center', fontSize: 12, fontWeight: 800, background: '#fbfaf9', flexShrink: 0 } }, tk[0]);
+          return React.createElement('div', { key: i, style: { display: 'grid', gridTemplateColumns: '1fr 110px 1fr', alignItems: 'center', height: 148, borderBottom: '1px solid rgba(32,30,29,0.14)', opacity: e.opacity, transform: `translateY(${e.y}px)` } },
+            React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'flex-end', minWidth: 0 } },
+              React.createElement('div', { style: { fontSize: 27, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textAlign: 'right' } }, c[0]), chip(A)),
+            React.createElement('div', { style: { textAlign: 'center' } },
+              React.createElement('div', { style: { fontSize: 24, fontWeight: 900, letterSpacing: '0.1em' } }, 'VS'),
+              React.createElement('div', { style: { width: 26, height: 3, background: RED, margin: '6px auto 0' } })),
+            React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 } },
+              chip(B), React.createElement('div', { style: { fontSize: 27, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden' } }, c[1]))
           );
         })
       )
