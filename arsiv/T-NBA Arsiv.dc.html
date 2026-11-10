@@ -22,9 +22,10 @@
   .ana{ grid-template-columns:1fr !important; gap:20px !important; padding-top:18px !important }
   .ana > *{ min-width:0 }
   .haftalar{ min-width:0; max-width:100% }
-  .hafta-serit{ flex-direction:row !important; max-height:none !important; min-width:0; max-width:100%; overflow-x:auto !important; overflow-y:hidden !important; gap:8px !important; padding:2px 2px 8px; scrollbar-width:none; -webkit-overflow-scrolling:touch }
+  .hafta-serit{ flex-wrap:nowrap !important; min-width:0; max-width:100%; overflow-x:auto !important; padding:1px 1px 6px; scrollbar-width:none; -webkit-overflow-scrolling:touch }
   .hafta-serit::-webkit-scrollbar{ display:none }
-  .hafta-cip{ flex:0 0 auto; padding:9px 13px !important; font-size:14px !important }
+  .hafta-cip{ width:40px !important; height:40px !important; font-size:15px !important }
+  .haftalar::after{ content:""; position:absolute; right:0; bottom:0; width:32px; height:52px; background:linear-gradient(90deg, rgba(243,242,242,0), var(--color-bg,#f3f2f2)); pointer-events:none }
   .sekmeler{ flex-wrap:nowrap !important; min-width:0; max-width:100%; overflow-x:auto !important; gap:8px !important; padding:2px 2px 8px; scrollbar-width:none; -webkit-overflow-scrolling:touch }
   .sekmeler::-webkit-scrollbar{ display:none }
   .sekmeler > div{ flex:0 0 auto; padding:10px 14px !important; font-size:13px !important }
@@ -53,11 +54,14 @@
     <div style="margin-left:auto;background:var(--color-accent,#ec3013);color:#fff;font-size:13px;font-weight:800;letter-spacing:0.18em;padding:8px 14px;white-space:nowrap">2026-27 SEZONU</div>
   </div>
   <div class="ana" style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding-top:32px;align-items:start">
-    <div class="haftalar" style="display:flex;flex-direction:column;gap:10px">
-      <div style="font-size:13px;font-weight:800;letter-spacing:0.24em;color:rgba(32,30,29,0.5);margin-bottom:4px">HAFTALAR</div>
-      <div class="hafta-serit" style="display:flex;flex-direction:column;gap:10px;max-height:460px;overflow-y:auto">
+    <div class="haftalar" style="display:flex;flex-direction:column;position:relative">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:800;letter-spacing:0.24em;color:rgba(32,30,29,0.5)">HAFTALAR</div>
+        <div style="font-size:12px;font-weight:900;letter-spacing:0.08em;color:var(--color-accent,#ec3013);white-space:nowrap">{{ selLabel }}</div>
+      </div>
+      <div class="hafta-serit" style="display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="1">
-        <div onClick="{{ w.pick }}" class="hafta-cip" style="cursor:pointer;padding:13px 16px;border:1px solid rgba(32,30,29,0.35);font-size:16px;font-weight:800;letter-spacing:0.1em;background:{{ w.bg }};color:{{ w.fg }};white-space:nowrap" style-hover="border-color:#201e1d">{{ w.label }}</div>
+        <div onClick="{{ w.pick }}" class="hafta-cip" style="cursor:pointer;flex:0 0 auto;width:42px;height:42px;display:grid;place-items:center;box-sizing:border-box;border:1px solid rgba(32,30,29,0.35);font-size:16px;font-weight:900;font-variant-numeric:tabular-nums;background:{{ w.bg }};color:{{ w.fg }}" style-hover="border-color:#201e1d">{{ w.num }}</div>
       </sc-for>
       </div>
     </div>
@@ -137,9 +141,11 @@ class Component extends DCLogic {
     const ink = '#201e1d', bgOn = '#201e1d', fgOn = '#f3f2f2';
     const weeks = (list || []).map((w, i) => ({
       label: w.hafta + '. HAFTA',
+      num: String(w.hafta),
       pick: () => this.loadWeek(list, i),
       bg: i === sel ? bgOn : 'transparent', fg: i === sel ? fgOn : ink
     }));
+    const selLabel = (list && list[sel]) ? list[sel].hafta + '. HAFTA' : '';
     const tabs = ['PUAN DURUMU', 'SONUÇLAR', "EN'LER", 'SIRALAMA SEYRİ ›'].map((t, i) => ({
       label: t, pick: () => { if (i === 3) { window.location.href = 'T-NBA%20Siralama%20Seyri.dc.html'; return; } this.setState({ tab: i }); },
       bg: i === tab ? bgOn : 'transparent', fg: i === tab ? fgOn : ink
@@ -154,7 +160,7 @@ class Component extends DCLogic {
       games = mod.WEEK.matchups.map(g => ({ ln: g[0], ls: g[1], rn: g[2], rs: g[3], lw: g[1] > g[3], rw: g[3] > g[1] }));
       cats = mod.WEEK.leaders.map(c => ({ code: c[0], val: c[2], team: c[3] }));
     }
-    return { weeks, tabs, rows, games, cats, isStand: tab === 0, isRes: tab === 1, isLead: tab === 2 };
+    return { weeks, selLabel, tabs, rows, games, cats, isStand: tab === 0, isRes: tab === 1, isLead: tab === 2 };
   }
 }
 </script>
