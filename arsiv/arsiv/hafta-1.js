@@ -65,7 +65,28 @@ export const WEEK = {
     ["BLK", "BLOCKS", "34", "Peripol Hornets"],
     ["TO", "TURNOVERS", "46", "Giresun Hazelnuts"],
     ["A/T", "ASSIST / TURNOVER", "2.24", "Dağsu Bears"]
-  ]
+  ],
+  // Her takımın bu haftaki 11 kategori değeri (Kategori DNA bunu okur)
+  teamStats: {
+    "Cardinals": {"FG%":".491", "FT%":".745", "3PTM":"39", "PTS":"400", "OREB":"32", "DREB":"105", "AST":"108", "ST":"32", "BLK":"10", "TO":"50", "A/T":"2.16"},
+    "Sin City Wolves": {"FG%":".418", "FT%":".795", "3PTM":"58", "PTS":"491", "OREB":"50", "DREB":"163", "AST":"99", "ST":"34", "BLK":"31", "TO":"67", "A/T":"1.48"},
+    "Ventolins": {"FG%":".434", "FT%":".745", "3PTM":"50", "PTS":"450", "OREB":"49", "DREB":"136", "AST":"137", "ST":"31", "BLK":"17", "TO":"64", "A/T":"2.14"},
+    "Dağsu Bears": {"FG%":".435", "FT%":".792", "3PTM":"55", "PTS":"545", "OREB":"46", "DREB":"140", "AST":"166", "ST":"37", "BLK":"26", "TO":"74", "A/T":"2.24"},
+    "God's Wrath": {"FG%":".427", "FT%":".759", "3PTM":"58", "PTS":"512", "OREB":"46", "DREB":"165", "AST":"121", "ST":"28", "BLK":"19", "TO":"80", "A/T":"1.51"},
+    "Giresun Hazelnuts": {"FG%":".516", "FT%":".811", "3PTM":"43", "PTS":"440", "OREB":"44", "DREB":"121", "AST":"80", "ST":"31", "BLK":"24", "TO":"46", "A/T":"1.74"},
+    "Eagles": {"FG%":".483", "FT%":".818", "3PTM":"64", "PTS":"533", "OREB":"69", "DREB":"145", "AST":"116", "ST":"33", "BLK":"21", "TO":"63", "A/T":"1.84"},
+    "Wild Butterfli's": {"FG%":".490", "FT%":".833", "3PTM":"55", "PTS":"531", "OREB":"40", "DREB":"139", "AST":"128", "ST":"38", "BLK":"28", "TO":"69", "A/T":"1.86"},
+    "Peripol Hornets": {"FG%":".435", "FT%":".793", "3PTM":"56", "PTS":"547", "OREB":"43", "DREB":"176", "AST":"121", "ST":"27", "BLK":"34", "TO":"74", "A/T":"1.64"},
+    "Rhizus Hawks": {"FG%":".501", "FT%":".787", "3PTM":"69", "PTS":"571", "OREB":"43", "DREB":"129", "AST":"94", "ST":"37", "BLK":"27", "TO":"48", "A/T":"1.96"},
+    "Wildcats": {"FG%":".461", "FT%":".824", "3PTM":"36", "PTS":"350", "OREB":"36", "DREB":"116", "AST":"110", "ST":"32", "BLK":"17", "TO":"56", "A/T":"1.96"},
+    "Dosma's Crazy Horses": {"FG%":".468", "FT%":".804", "3PTM":"55", "PTS":"543", "OREB":"70", "DREB":"163", "AST":"111", "ST":"35", "BLK":"12", "TO":"82", "A/T":"1.35"},
+    "Borçka Bulls": {"FG%":".442", "FT%":".887", "3PTM":"64", "PTS":"377", "OREB":"33", "DREB":"110", "AST":"112", "ST":"30", "BLK":"12", "TO":"50", "A/T":"2.24"},
+    "Phoenix Ashes": {"FG%":".481", "FT%":".771", "3PTM":"69", "PTS":"429", "OREB":"39", "DREB":"98", "AST":"101", "ST":"29", "BLK":"21", "TO":"57", "A/T":"1.77"},
+    "Kaplıca Gunslingers": {"FG%":".461", "FT%":".810", "3PTM":"54", "PTS":"400", "OREB":"34", "DREB":"92", "AST":"96", "ST":"34", "BLK":"12", "TO":"59", "A/T":"1.63"},
+    "San Andon Spurs": {"FG%":".475", "FT%":".803", "3PTM":"63", "PTS":"613", "OREB":"46", "DREB":"154", "AST":"147", "ST":"38", "BLK":"18", "TO":"87", "A/T":"1.69"},
+    "Sultan Selim Suns": {"FG%":".477", "FT%":".774", "3PTM":"58", "PTS":"528", "OREB":"47", "DREB":"136", "AST":"84", "ST":"33", "BLK":"26", "TO":"67", "A/T":"1.25"},
+    "Ottoman": {"FG%":".481", "FT%":".752", "3PTM":"49", "PTS":"558", "OREB":"66", "DREB":"163", "AST":"96", "ST":"41", "BLK":"17", "TO":"62", "A/T":"1.55"}
+  }
 };
 
 // Hafta öncesi fikstür — teaser kartı bunu okur.
