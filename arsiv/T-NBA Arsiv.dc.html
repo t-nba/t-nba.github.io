@@ -88,14 +88,14 @@
 class Component extends DCLogic {
   state = { list: null, mod: null, sel: 0, tab: 0 };
   componentDidMount() {
-    import('./arsiv/haftalar.js').then(m => {
+    import('./arsiv/haftalar.js?v=' + Date.now()).then(m => { // her açılışta taze liste (önbellek aşımı)
       this.setState({ list: m.HAFTALAR });
       this.loadWeek(m.HAFTALAR, 0);
     });
   }
   loadWeek(list, i) {
     const f = list[i].dosya.replace('./', '');
-    Promise.all([import('./arsiv/' + f), import('./tnba-data.js'), import('./tnba-logo-fx.js')]).then(([m, d, fx]) => fx.processTeams(d.TEAMS).then(T => this.setState({ mod: { ...m, TEAMS: T }, sel: i })));
+    Promise.all([import('./arsiv/' + f + '?v=' + Date.now()), import('./tnba-data.js?v=' + Date.now()), import('./tnba-logo-fx.js')]).then(([m, d, fx]) => fx.processTeams(d.TEAMS).then(T => this.setState({ mod: { ...m, TEAMS: T }, sel: i })));
   }
   renderVals() {
     const { list, mod, sel, tab } = this.state;
