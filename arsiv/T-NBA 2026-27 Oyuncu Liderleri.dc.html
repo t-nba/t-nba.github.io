@@ -63,11 +63,15 @@ class Component extends DCLogic {
     const d = this.state.d;
     if (!d) return { hafta: "", cats: [] };
     const T = d.TEAMS;
-    const cats = (d.PLAYER_LEADERS || []).map(c => ({
-      code: c[0], desc: c[1], val: c[2], player: c[3],
-      teamUp: c[4].toUpperCase(), tm: T[c[4]][0], tc: T[c[4]][1], tlogo: T[c[4]][2],
-      alt: c[5] || "", altVar: !!c[5]
-    }));
+    const cats = (d.PLAYER_LEADERS || []).map(c => {
+      // Takım TEAMS'te yoksa (sahipsiz/yazım farkı) ekran ÇÖKMESİN: nötr rozet göster
+      const t = T[c[4]] || [(c[4] || "?").slice(0, 2).toUpperCase(), "#9b9b9b", null];
+      return {
+        code: c[0], desc: c[1], val: c[2], player: c[3],
+        teamUp: (c[4] || "—").toUpperCase(), tm: t[0], tc: t[1], tlogo: t[2],
+        alt: c[5] || "", altVar: !!c[5]
+      };
+    });
     return { hafta: d.WEEK.hafta, cats };
   }
 }

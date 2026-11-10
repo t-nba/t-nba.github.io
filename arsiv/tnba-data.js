@@ -94,7 +94,6 @@ export const PLAYER_LEADERS = [
   ["AST", "ASSISTS", "36", "Darius Acuff Jr.", "San Andon Spurs"],
   ["ST", "STEALS", "11", "Dyson Daniels", "Ventolins"],
   ["BLK", "BLOCKS", "14", "Victor Wembanyama", "Rhizus Hawks"],
-  ["TO", "TURNOVERS", "0", "Leaky Black", ""],
   ["A/T", "ASSIST / TURNOVER", "10.000", "Miles Bridges", "Ventolins", "20/2"]
 ];
 
