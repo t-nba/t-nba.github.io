@@ -130,7 +130,7 @@ class Component extends DCLogic {
       pick: () => this.loadWeek(list, i),
       bg: i === sel ? bgOn : 'transparent', fg: i === sel ? fgOn : ink
     }));
-    const tabs = ['PUAN DURUMU', 'SONUÇLAR', "EN'LER", 'SIRALAMA SEYRİ ↗'].map((t, i) => ({
+    const tabs = ['PUAN DURUMU', 'SONUÇLAR', "EN'LER", 'SIRALAMA SEYRİ ›'].map((t, i) => ({
       label: t, pick: () => { if (i === 3) { window.location.href = 'T-NBA%20Siralama%20Seyri.dc.html'; return; } this.setState({ tab: i }); },
       bg: i === tab ? bgOn : 'transparent', fg: i === tab ? fgOn : ink
     }));
