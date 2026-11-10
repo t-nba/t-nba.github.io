@@ -36,8 +36,11 @@
   .formh{ display:none !important }
   .mac{ grid-template-columns:1fr 78px 1fr !important }
   .mac > div{ font-size:16px !important }
-  .lid{ grid-template-columns:64px 1fr 96px !important }
-  .lid > div{ font-size:17px !important }
+  .lid{ grid-template-columns:52px 1fr auto !important; column-gap:8px }
+  .lid > div{ font-size:17px !important; min-width:0 }
+  .lid > div:nth-child(1){ font-size:14px !important }
+  .lid > div:nth-child(2){ font-size:19px !important }
+  .lid > div:last-child{ font-size:13px !important; max-width:160px; overflow:hidden; text-overflow:ellipsis }
 }
 </style>
 <script src="image-slot.js"></script>
