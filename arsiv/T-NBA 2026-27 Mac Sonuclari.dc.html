@@ -35,20 +35,26 @@
             <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ true }}"><div style="font-size:24px;font-weight:800;white-space:nowrap">{{ g.ln }}</div></sc-if>
             <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="font-size:24px;font-weight:600;color:rgba(32,30,29,0.5);white-space:nowrap">{{ g.ln }}</div></sc-if>
             <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ false }}"><div style="margin-top:5px;font-size:13px;font-weight:900;letter-spacing:0.26em;color:var(--color-accent,#ec3013)">KAZANAN</div></sc-if>
+            <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="font-size:24px;font-weight:800;white-space:nowrap">{{ g.ln }}</div></sc-if>
+            <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="margin-top:5px;font-size:13px;font-weight:900;letter-spacing:0.26em;color:rgba(32,30,29,0.5)">BERABERE</div></sc-if>
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px">
           <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ true }}"><div style="font-size:56px;font-weight:900;font-variant-numeric:tabular-nums">{{ g.ls }}</div></sc-if>
           <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="font-size:56px;font-weight:900;font-variant-numeric:tabular-nums;color:rgba(32,30,29,0.35)">{{ g.ls }}</div></sc-if>
+          <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="font-size:56px;font-weight:900;font-variant-numeric:tabular-nums">{{ g.ls }}</div></sc-if>
           <div style="width:16px;height:2px;background:rgba(32,30,29,0.35)"></div>
           <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ true }}"><div style="font-size:56px;font-weight:900;font-variant-numeric:tabular-nums">{{ g.rs }}</div></sc-if>
           <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ false }}"><div style="font-size:56px;font-weight:900;font-variant-numeric:tabular-nums;color:rgba(32,30,29,0.35)">{{ g.rs }}</div></sc-if>
+          <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="font-size:56px;font-weight:900;font-variant-numeric:tabular-nums">{{ g.rs }}</div></sc-if>
         </div>
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:16px;min-width:0">
           <div style="min-width:0;text-align:right">
             <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="font-size:24px;font-weight:800;white-space:nowrap">{{ g.rn }}</div></sc-if>
             <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ true }}"><div style="font-size:24px;font-weight:600;color:rgba(32,30,29,0.5);white-space:nowrap">{{ g.rn }}</div></sc-if>
             <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="margin-top:5px;font-size:13px;font-weight:900;letter-spacing:0.26em;color:var(--color-accent,#ec3013)">KAZANAN</div></sc-if>
+            <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="font-size:24px;font-weight:800;white-space:nowrap">{{ g.rn }}</div></sc-if>
+            <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="margin-top:5px;font-size:13px;font-weight:900;letter-spacing:0.26em;color:rgba(32,30,29,0.5)">BERABERE</div></sc-if>
           </div>
           <img src="{{ g.rlogo }}" alt="" style="flex-shrink:0;width:75px;height:75px;object-fit:contain;display:block"></img>
         </div>
@@ -74,7 +80,7 @@ class Component extends DCLogic {
     const games = G.map((g, i) => ({
       ln: g[0], ls: g[1], rn: g[2], rs: g[3],
       lm: T[g[0]][0], lc: T[g[0]][1], llogo: T[g[0]][2], rm: T[g[2]][0], rc: T[g[2]][1], rlogo: T[g[2]][2],
-      lw: g[1] > g[3], rw: g[3] > g[1],
+      lw: g[1] > g[3], rw: g[3] > g[1], tw: g[1] === g[3],
       hasTag: i === iMin || i === iMax,
       tag: i === iMin ? "EN ÇEKİŞMELİ" : "EN FARKLI"
     }));

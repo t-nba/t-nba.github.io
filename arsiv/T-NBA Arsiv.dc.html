@@ -99,11 +99,13 @@
             <div class="mac" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:center;height:64px;border-bottom:1px solid rgba(32,30,29,0.14)">
               <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ true }}"><div style="font-size:20px;font-weight:800;white-space:nowrap;overflow:hidden">{{ g.ln }}</div></sc-if>
               <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="font-size:20px;font-weight:600;color:rgba(32,30,29,0.5);white-space:nowrap;overflow:hidden">{{ g.ln }}</div></sc-if>
+              <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="font-size:20px;font-weight:800;white-space:nowrap;overflow:hidden">{{ g.ln }}</div></sc-if>
               <div style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:26px;font-weight:900;font-variant-numeric:tabular-nums">
                 <div>{{ g.ls }}</div><div style="width:12px;height:2px;background:rgba(32,30,29,0.35)"></div><div>{{ g.rs }}</div>
               </div>
               <sc-if value="{{ g.rw }}" hint-placeholder-val="{{ false }}"><div style="font-size:20px;font-weight:800;text-align:right;white-space:nowrap;overflow:hidden">{{ g.rn }}</div></sc-if>
               <sc-if value="{{ g.lw }}" hint-placeholder-val="{{ true }}"><div style="font-size:20px;font-weight:600;color:rgba(32,30,29,0.5);text-align:right;white-space:nowrap;overflow:hidden">{{ g.rn }}</div></sc-if>
+              <sc-if value="{{ g.tw }}" hint-placeholder-val="{{ false }}"><div style="font-size:20px;font-weight:800;text-align:right;white-space:nowrap;overflow:hidden">{{ g.rn }}</div></sc-if>
             </div>
           </sc-for>
         </div>
@@ -157,7 +159,7 @@ class Component extends DCLogic {
         r: a.r, n: a.n, m: T[a.n][0], c: T[a.n][1], logo: T[a.n][2], rec: a.rec,
         form: a.form.split('').map(x => ({ w: x === 'W', l: x === 'L', t: x === 'T' }))
       }));
-      games = mod.WEEK.matchups.map(g => ({ ln: g[0], ls: g[1], rn: g[2], rs: g[3], lw: g[1] > g[3], rw: g[3] > g[1] }));
+      games = mod.WEEK.matchups.map(g => ({ ln: g[0], ls: g[1], rn: g[2], rs: g[3], lw: g[1] > g[3], rw: g[3] > g[1], tw: g[1] === g[3] }));
       cats = mod.WEEK.leaders.map(c => ({ code: c[0], val: c[2], team: c[3] }));
     }
     return { weeks, selLabel, tabs, rows, games, cats, isStand: tab === 0, isRes: tab === 1, isLead: tab === 2 };

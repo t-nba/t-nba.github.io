@@ -84,15 +84,15 @@ function Piece() {
         M.map((m, i) => {
           const at = CUES.Skorlar + 0.45 + i * 0.5;
           const e = MO.enter(at)(T), p = MO.pop(at + 0.2)(T);
-          const lw = m[1] > m[3];
+          const lw = m[1] > m[3]; const tw = m[1] === m[3];
           return React.createElement('div', { key: i, style: { display: 'grid', gridTemplateColumns: '1fr 200px 1fr', alignItems: 'center', height: 172, borderBottom: '1px solid rgba(32,30,29,0.14)', opacity: e.opacity, transform: `translateY(${e.y}px)` } },
-            React.createElement('div', { style: { fontSize: 27, fontWeight: lw ? 800 : 600, color: lw ? INK : DIM, whiteSpace: 'nowrap' } }, m[0]),
+            React.createElement('div', { style: { fontSize: 27, fontWeight: (lw || tw) ? 800 : 600, color: (lw || tw) ? INK : DIM, whiteSpace: 'nowrap' } }, m[0]),
             React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, transform: `scale(${p})` } },
-              React.createElement('div', { style: { fontSize: 52, fontWeight: 900, color: lw ? INK : 'rgba(32,30,29,0.35)' } }, m[1]),
+              React.createElement('div', { style: { fontSize: 52, fontWeight: 900, color: (lw || tw) ? INK : 'rgba(32,30,29,0.35)' } }, m[1]),
               React.createElement('div', { style: { width: 14, height: 3, background: RED } }),
-              React.createElement('div', { style: { fontSize: 52, fontWeight: 900, color: lw ? 'rgba(32,30,29,0.35)' : INK } }, m[3])
+              React.createElement('div', { style: { fontSize: 52, fontWeight: 900, color: (lw && !tw) ? 'rgba(32,30,29,0.35)' : INK } }, m[3])
             ),
-            React.createElement('div', { style: { fontSize: 27, fontWeight: lw ? 600 : 800, color: lw ? DIM : INK, textAlign: 'right', whiteSpace: 'nowrap' } }, m[2])
+            React.createElement('div', { style: { fontSize: 27, fontWeight: (lw && !tw) ? 600 : 800, color: (lw && !tw) ? DIM : INK, textAlign: 'right', whiteSpace: 'nowrap' } }, m[2])
           );
         })
       )
